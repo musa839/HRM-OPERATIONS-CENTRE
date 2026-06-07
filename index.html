@@ -1,305 +1,354 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HRMP Logistics — Operations Centre</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>HRMP Logistics — Operations Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f4f5f7;--white:#fff;--border:#dde1e5;--bdk:#b0b8c1;
+  --green:#3a8c4a;--glt:#e8f5ea;--gdk:#2a6636;
+  --black:#111;--ch:#2c2c2c;
+  --red:#c0392b;--rlt:#fdf0ef;
+  --amber:#e07b00;--alt:#fff3e0;
+  --blue:#1a6fa8;--blt:#e8f4fd;
+  --purple:#6b3fa0;--plt:#f3eeff;
+  --teal:#0e8c7a;--tlt:#e0f5f2;
+  --muted:#6b7280;--mlt:#9ca3af;
+  --fh:'Roboto Condensed',sans-serif;--fb:'Roboto',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ch);font-family:var(--fb);min-height:100vh;padding-bottom:60px;}
+header{background:var(--white);border-bottom:3px solid var(--green);padding:14px 24px;display:flex;align-items:center;gap:18px;box-shadow:0 2px 8px rgba(0,0,0,0.07);flex-wrap:wrap;}
+.logo-wrap{display:flex;align-items:center;justify-content:center;width:60px;height:56px;background:var(--gdk);border-radius:6px;flex-shrink:0;}
+.logo-wrap span{font-family:var(--fh);font-weight:900;font-size:18px;color:#fff;letter-spacing:1px;}
+.hd{width:1px;height:42px;background:var(--border);flex-shrink:0;}
+.htext h1{font-family:var(--fh);font-weight:700;font-size:17px;letter-spacing:1.5px;text-transform:uppercase;color:var(--black);}
+.htext p{font-size:11px;color:var(--muted);margin-top:2px;}
+.htag{font-family:var(--fh);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-top:3px;}
+.hright{margin-left:auto;display:flex;gap:12px;align-items:center;}
+.msel{display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
+.msel label{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.msel input[type=month]{background:var(--bg);border:1.5px solid var(--bdk);color:var(--black);font-family:var(--fh);font-size:14px;font-weight:700;padding:5px 9px;border-radius:4px;outline:none;}
+.msel input[type=month]:focus{border-color:var(--green);}
+.stripe{height:4px;background:linear-gradient(90deg,var(--gdk),var(--green) 60%,#5cb870);}
+.tabs{display:flex;padding:0 24px;background:var(--white);border-bottom:2px solid var(--border);overflow-x:auto;}
+.tab{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:12px 14px;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.2s,border-color 0.2s;user-select:none;white-space:nowrap;}
+.tab:hover{color:var(--green);}
+.tab.active{color:var(--gdk);border-bottom-color:var(--green);}
+.panel{display:none;padding:20px 24px 0;}
+.panel.active{display:block;}
+.sec{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:14px;margin-top:4px;}
+.sec::before{content:'';width:4px;height:13px;background:var(--green);border-radius:2px;}
+.sec::after{content:'';flex:1;height:1px;background:var(--border);}
+.krow{display:grid;gap:10px;margin-bottom:18px;margin-top:8px;}
+.krow.c3{grid-template-columns:repeat(3,1fr);}
+.krow.c4{grid-template-columns:repeat(4,1fr);}
+.krow.c5{grid-template-columns:repeat(5,1fr);}
+.krow.c6{grid-template-columns:repeat(6,1fr);}
+.kc{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:12px 14px;position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.kc.cg::before{background:var(--green);}
+.kc.ca::before{background:var(--amber);}
+.kc.cr::before{background:var(--red);}
+.kc.cb::before{background:var(--blue);}
+.kc.ck::before{background:var(--black);}
+.kc.cp::before{background:var(--purple);}
+.kl{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--mlt);margin-bottom:5px;}
+.kv{font-family:var(--fh);font-size:20px;font-weight:900;line-height:1;color:var(--black);}
+.kc.cg .kv{color:var(--gdk);}
+.kc.ca .kv{color:var(--amber);}
+.kc.cr .kv{color:var(--red);}
+.kc.cb .kv{color:var(--blue);}
+.kc.cp .kv{color:var(--purple);}
+.ks{font-size:9px;color:var(--mlt);margin-top:3px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.05);margin-bottom:14px;}
+.card-title{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.fgrid{display:grid;gap:10px;}
+.fgrid.c1{grid-template-columns:1fr;}
+.fgrid.c2{grid-template-columns:repeat(2,1fr);}
+.fgrid.c3{grid-template-columns:repeat(3,1fr);}
+.fgrid.c4{grid-template-columns:repeat(4,1fr);}
+.fgrid.c5{grid-template-columns:repeat(5,1fr);}
+.fgrid.c6{grid-template-columns:repeat(6,1fr);}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fg label{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600;}
+.fg input,.fg select{background:var(--bg);border:1.5px solid var(--bdk);color:var(--black);font-family:var(--fb);font-size:12px;padding:7px 9px;border-radius:4px;outline:none;width:100%;}
+.fg input:focus,.fg select:focus{border-color:var(--green);background:var(--glt);}
+.btn-p{background:var(--green);color:#fff;border:none;font-family:var(--fh);font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:9px 16px;border-radius:4px;cursor:pointer;}
+.btn-p:hover{background:var(--gdk);}
+.fmsg{font-size:11px;font-weight:600;margin-left:10px;}
+.tw{overflow-x:auto;margin-bottom:4px;}
+table.gt{width:100%;border-collapse:collapse;font-size:11px;background:var(--white);border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+table.gt thead tr{background:var(--black);}
+table.gt thead th{font-family:var(--fh);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:10px;text-align:left;white-space:nowrap;}
+table.gt thead th.rt{text-align:right;}
+table.gt thead th.ct{text-align:center;}
+table.gt tbody tr{border-bottom:1px solid var(--border);}
+table.gt tbody tr:hover{background:var(--glt);}
+table.gt tbody td{padding:8px 10px;font-size:11px;}
+table.gt tbody td.rt{text-align:right;}
+table.gt tbody td.ct{text-align:center;}
+table.gt tfoot tr{background:var(--black);border-top:2px solid var(--green);}
+table.gt tfoot td{padding:9px 10px;font-family:var(--fh);font-weight:700;font-size:11px;color:#fff;}
+table.gt tfoot td.rt{text-align:right;}
+table.gt tfoot td:last-child{background:var(--gdk);}
+.empty-msg td{text-align:center;padding:20px;color:var(--mlt);font-style:italic;}
+.tbadge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--black);color:#fff;font-family:var(--fh);font-weight:900;font-size:10px;border-radius:3px;}
+.reg{font-family:'Courier New',monospace;font-size:10px;font-weight:700;letter-spacing:1px;}
+.sbadge,.stbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.sb-lead{background:#f0f1f3;color:var(--muted);}
+.sb-qual{background:var(--blt);color:var(--blue);}
+.sb-quote{background:var(--alt);color:var(--amber);}
+.sb-neg{background:var(--plt);color:var(--purple);}
+.sb-won{background:var(--glt);color:var(--gdk);}
+.sb-lost{background:var(--rlt);color:var(--red);}
+.st-truck{background:var(--blt);color:var(--blue);}
+.st-fork{background:var(--tlt);color:var(--teal);}
+.st-vas{background:var(--plt);color:var(--purple);}
+.status-badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;font-family:var(--fh);letter-spacing:1px;text-transform:uppercase;}
+.sb-active{background:var(--glt);color:var(--gdk);}
+.sb-off{background:#f0f0f0;color:var(--muted);}
+.sb-sick{background:var(--rlt);color:var(--red);}
+.pdot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;}
+.pd-high{background:var(--red);}
+.pd-med{background:var(--amber);}
+.pd-low{background:var(--green);}
+.btn-del{background:none;border:none;color:var(--mlt);cursor:pointer;font-size:12px;padding:2px 5px;border-radius:3px;}
+.btn-del:hover{color:var(--red);background:var(--rlt);}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.dcard{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.dcard h3{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+.list-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.list-item:last-child{border-bottom:none;}
+.bar-wrap{flex:1;background:var(--bg);border-radius:3px;height:5px;overflow:hidden;}
+.bar{height:100%;border-radius:3px;}
+.bar-g{background:var(--green);}
+.bar-a{background:var(--amber);}
+.alert-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block;margin-right:6px;}
+.dot-r{background:var(--red);}
+.dot-a{background:var(--amber);}
+.dot-g{background:var(--green);}
+.funnel-wrap{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:18px;}
+.fstage{border-radius:6px;padding:12px;text-align:center;}
+.fsl{font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.fsc{font-family:var(--fh);font-size:26px;font-weight:900;line-height:1;}
+.fsv{font-size:11px;font-weight:600;margin-top:3px;}
+.fsp{font-size:10px;margin-top:2px;opacity:0.7;}
+.fs-lead{background:#f0f1f3;color:var(--muted);}
+.fs-qual{background:var(--blt);color:var(--blue);}
+.fs-quote{background:var(--alt);color:var(--amber);}
+.fs-neg{background:var(--plt);color:var(--purple);}
+.fs-won{background:var(--glt);color:var(--gdk);}
+.fs-lost{background:var(--rlt);color:var(--red);}
+.scorecard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+.sc-card{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.sc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.sc-name{font-family:var(--fh);font-weight:700;font-size:14px;flex:1;}
+.rating-wrap{display:flex;gap:2px;}
+.star{font-size:14px;color:var(--border);}
+.star.filled{color:var(--amber);}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.sc-stat .scl{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--mlt);}
+.sc-stat .scv{font-family:var(--fh);font-size:15px;font-weight:900;line-height:1.2;}
+.stream-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+.stream-card{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:14px 16px;border-top:3px solid transparent;}
+.stream-card.sc-truck{border-top-color:var(--blue);}
+.stream-card.sc-fork{border-top-color:var(--teal);}
+.stream-card.sc-vas{border-top-color:var(--purple);}
+.stream-card h4{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.sc-truck h4{color:var(--blue);}
+.sc-fork h4{color:var(--teal);}
+.sc-vas h4{color:var(--purple);}
+.scs{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.scs .scl{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--mlt);}
+.scs .scv{font-family:var(--fh);font-size:16px;font-weight:900;}
+.export-row{display:flex;flex-wrap:wrap;gap:8px;}
+.btn-ex{border:none;font-family:var(--fh);font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 16px;border-radius:4px;cursor:pointer;color:#fff;}
+.btn-ex.csv{background:var(--green);}
+.btn-ex.pdf{background:var(--red);}
+.btn-ex.htm{background:var(--black);}
+.report-preview{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:28px 32px;box-shadow:0 2px 12px rgba(0,0,0,0.08);max-width:900px;margin:0 auto 24px;}
+.btn-report{background:var(--green);color:#fff;border:none;font-family:var(--fh);font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;border-radius:4px;cursor:pointer;margin-right:8px;}
+.btn-report:hover{background:var(--gdk);}
+.page-footer{margin:20px 24px 0;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.page-footer span{font-size:10px;color:var(--mlt);}
+.filter-bar{display:flex;gap:10px;margin-bottom:10px;align-items:center;flex-wrap:wrap;}
+.filter-bar label{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+.filter-bar select{background:var(--white);border:1.5px solid var(--bdk);font-family:var(--fb);font-size:12px;padding:5px 9px;border-radius:4px;outline:none;}
+.inline-input{background:transparent;border:none;border-bottom:1px dashed var(--bdk);font-family:var(--fb);font-size:12px;color:var(--ch);padding:2px 4px;outline:none;width:100%;}
+.inline-select{background:transparent;border:none;border-bottom:1px dashed var(--bdk);font-family:var(--fb);font-size:12px;padding:2px;outline:none;width:100%;cursor:pointer;}
+@media(max-width:800px){
+  .krow.c3,.krow.c4,.krow.c5,.krow.c6{grid-template-columns:repeat(2,1fr);}
+  .fgrid.c3,.fgrid.c4,.fgrid.c5,.fgrid.c6{grid-template-columns:repeat(2,1fr);}
+  .dgrid,.stream-row,.scorecard-grid{grid-template-columns:1fr;}
+  .funnel-wrap{grid-template-columns:repeat(3,1fr);}
+  header{padding:12px 14px;}
+  .hd{display:none;}
+  .panel,.tabs{padding-left:14px;padding-right:14px;}
+  .hright{margin-left:0;}
+}
+</style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  HEADER                                                     -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<header class="site-header">
-  <img class="logo-img" src="assets/logo/hrmp-logo.png" alt="HRMP Logistics" />
-  <div class="header-divider"></div>
-  <div class="header-text">
+<header>
+  <img src="assets/logo/hrmp-logo.png" alt="HRMP Logistics" style="height:56px;width:auto;flex-shrink:0;" onerror="this.outerHTML='<div class=\'logo-wrap\'><span>HRMP</span></div>'"/>
+  <div class="hd"></div>
+  <div class="htext">
     <h1>Operations Centre</h1>
     <p>Fleet · Finance · Fuel · Drivers · Maintenance · BD Pipeline · KwaZulu-Natal</p>
-    <div class="header-tag">Delivering. Our Promise.</div>
+    <div class="htag">Delivering. Our Promise.</div>
   </div>
-  <div class="header-right">
-    <div class="month-selector">
-      <label for="monthPicker">Month</label>
-      <input type="month" id="monthPicker" />
-    </div>
+  <div class="hright">
+    <div class="msel"><label>Month</label><input type="month" id="monthPicker"/></div>
   </div>
 </header>
-<div class="stripe-bar"></div>
+<div class="stripe"></div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  TAB BAR                                                    -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<nav class="tab-bar">
-  <div class="tab active" id="tab-dashboard"  onclick="switchTab('dashboard')">📊 Dashboard</div>
-  <div class="tab"        id="tab-fleet"      onclick="switchTab('fleet')">🚛 Fleet &amp; Finance</div>
-  <div class="tab"        id="tab-fuel"       onclick="switchTab('fuel')">⛽ Fuel Log</div>
-  <div class="tab"        id="tab-odo"        onclick="switchTab('odo')">🔢 Odometer</div>
-  <div class="tab"        id="tab-drivers"    onclick="switchTab('drivers')">👤 Drivers</div>
-  <div class="tab"        id="tab-maint"      onclick="switchTab('maint')">🔧 Maintenance</div>
-  <div class="tab"        id="tab-tyre"       onclick="switchTab('tyre')">⚫ Tyre Log</div>
-  <div class="tab"        id="tab-trip"       onclick="switchTab('trip')">🗺 Trip Log</div>
-  <div class="tab"        id="tab-bd"         onclick="switchTab('bd')">🔀 BD Pipeline</div>
-  <div class="tab"        id="tab-report"     onclick="switchTab('report')">📋 Report</div>
-  <div class="tab"        id="tab-export"     onclick="switchTab('export')">⬇ Export</div>
-</nav>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 1 — EXECUTIVE DASHBOARD                             -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<div class="panel active" id="panel-dashboard">
-
-  <!-- KPI Row -->
-  <div class="kpi-row cols-6">
-    <div class="kpi-card green">
-      <div class="kpi-label">Fleet Revenue</div>
-      <div class="kpi-value" id="ekRev">R 0</div>
-      <div class="kpi-sub">This month</div>
-    </div>
-    <div class="kpi-card red">
-      <div class="kpi-label">Fleet Costs</div>
-      <div class="kpi-value" id="ekCost">R 0</div>
-      <div class="kpi-sub">This month</div>
-    </div>
-    <div class="kpi-card black">
-      <div class="kpi-label">Net Profit</div>
-      <div class="kpi-value" id="ekNet">R 0</div>
-      <div class="kpi-sub">Before tax</div>
-    </div>
-    <div class="kpi-card amber">
-      <div class="kpi-label">Fuel Spend</div>
-      <div class="kpi-value" id="ekFuel">R 0</div>
-      <div class="kpi-sub">This month</div>
-    </div>
-    <div class="kpi-card blue">
-      <div class="kpi-label">BD Pipeline</div>
-      <div class="kpi-value" id="ekPipe">R 0</div>
-      <div class="kpi-sub">Active deals</div>
-    </div>
-    <div class="kpi-card purple">
-      <div class="kpi-label">Win Rate</div>
-      <div class="kpi-value" id="ekWin">0%</div>
-      <div class="kpi-sub">BD deals</div>
-    </div>
-  </div>
-
-  <!-- Dashboard Grid -->
-  <div class="dash-grid">
-    <div class="dash-card">
-      <h3>🚛 Truck P&amp;L Overview</h3>
-      <div id="execTruckPL"></div>
-    </div>
-    <div class="dash-card">
-      <h3>⚠ Alerts &amp; Actions</h3>
-      <div id="execAlerts"></div>
-    </div>
-    <div class="dash-card">
-      <h3>⛽ Fuel Efficiency per Truck</h3>
-      <div id="execFuelEff"></div>
-    </div>
-    <div class="dash-card">
-      <h3>🔀 BD Pipeline Snapshot</h3>
-      <div id="execBD"></div>
-    </div>
-  </div>
-
+<div class="tabs">
+  <div class="tab active" id="tab-exec"    onclick="ST('exec')">📊 Dashboard</div>
+  <div class="tab"        id="tab-fleet"   onclick="ST('fleet')">🚛 Fleet &amp; Finance</div>
+  <div class="tab"        id="tab-fuel"    onclick="ST('fuel')">⛽ Fuel Log</div>
+  <div class="tab"        id="tab-odo"     onclick="ST('odo')">🔢 Odometer</div>
+  <div class="tab"        id="tab-drivers" onclick="ST('drivers')">👤 Drivers</div>
+  <div class="tab"        id="tab-maint"   onclick="ST('maint')">🔧 Maintenance</div>
+  <div class="tab"        id="tab-tyre"    onclick="ST('tyre')">⚫ Tyre Log</div>
+  <div class="tab"        id="tab-trip"    onclick="ST('trip')">🗺 Trip Log</div>
+  <div class="tab"        id="tab-bd"      onclick="ST('bd')">🔀 BD Pipeline</div>
+  <div class="tab"        id="tab-report"  onclick="ST('report')">📋 Report</div>
+  <div class="tab"        id="tab-export"  onclick="ST('export')">⬇ Export</div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 2 — FLEET & FINANCE                                 -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DASHBOARD -->
+<div class="panel active" id="panel-exec">
+  <div class="krow c6">
+    <div class="kc cg"><div class="kl">Fleet Revenue</div><div class="kv" id="ekRev">R 0</div><div class="ks">This month</div></div>
+    <div class="kc cr"><div class="kl">Fleet Costs</div><div class="kv" id="ekCost">R 0</div><div class="ks">This month</div></div>
+    <div class="kc ck"><div class="kl">Net Profit</div><div class="kv" id="ekNet">R 0</div><div class="ks">Before tax</div></div>
+    <div class="kc ca"><div class="kl">Fuel Spend</div><div class="kv" id="ekFuel">R 0</div><div class="ks">This month</div></div>
+    <div class="kc cb"><div class="kl">BD Pipeline</div><div class="kv" id="ekPipe">R 0</div><div class="ks">Active deals</div></div>
+    <div class="kc cp"><div class="kl">Win Rate</div><div class="kv" id="ekWin">0%</div><div class="ks">BD deals</div></div>
+  </div>
+  <div class="dgrid">
+    <div class="dcard"><h3>🚛 Truck P&amp;L Overview</h3><div id="execTruckPL"></div></div>
+    <div class="dcard"><h3>⚠ Alerts &amp; Actions</h3><div id="execAlerts"></div></div>
+    <div class="dcard"><h3>⛽ Fuel Efficiency per Truck</h3><div id="execFuelEff"></div></div>
+    <div class="dcard"><h3>🔀 BD Pipeline Snapshot</h3><div id="execBD"></div></div>
+  </div>
+</div>
+
+<!-- FLEET & FINANCE -->
 <div class="panel" id="panel-fleet">
-
-  <div class="kpi-row cols-4">
-    <div class="kpi-card green">
-      <div class="kpi-label">Total Revenue</div>
-      <div class="kpi-value" id="fltRev">R 0</div>
-      <div class="kpi-sub">All trucks</div>
-    </div>
-    <div class="kpi-card red">
-      <div class="kpi-label">Total Costs</div>
-      <div class="kpi-value" id="fltCost">R 0</div>
-      <div class="kpi-sub">All trucks</div>
-    </div>
-    <div class="kpi-card black">
-      <div class="kpi-label">Net Profit</div>
-      <div class="kpi-value" id="fltNet">R 0</div>
-      <div class="kpi-sub">Before tax</div>
-    </div>
-    <div class="kpi-card amber">
-      <div class="kpi-label">Margin</div>
-      <div class="kpi-value" id="fltMgn">0%</div>
-      <div class="kpi-sub">Net margin</div>
-    </div>
+  <div class="krow c4">
+    <div class="kc cg"><div class="kl">Total Revenue</div><div class="kv" id="fltRev">R 0</div><div class="ks">All trucks</div></div>
+    <div class="kc cr"><div class="kl">Total Costs</div><div class="kv" id="fltCost">R 0</div><div class="ks">All trucks</div></div>
+    <div class="kc ck"><div class="kl">Net Profit</div><div class="kv" id="fltNet">R 0</div><div class="ks">Before tax</div></div>
+    <div class="kc ca"><div class="kl">Margin</div><div class="kv" id="fltMgn">0%</div><div class="ks">Net margin</div></div>
   </div>
-
-  <!-- Per-truck accordions injected here by JS -->
   <div id="truckWorkings"></div>
-
-  <div class="section-header">Fleet Summary</div>
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th><th>Registration</th>
-          <th class="rt">Revenue</th><th class="rt">Fuel</th>
-          <th class="rt">Driver Pay</th><th class="rt">Maintenance</th>
-          <th class="rt">Tyres</th><th class="rt">Tolls</th>
-          <th class="rt">Insurance</th><th class="rt">Other</th>
-          <th class="rt">Total Cost</th><th class="rt">Net P/L</th>
-        </tr>
-      </thead>
-      <tbody id="fleetSumBody"></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="2">Fleet Total</td>
-          <td class="rt" id="fsRev">—</td>
-          <td class="rt" id="fsFuel">—</td>
-          <td class="rt" id="fsDrv">—</td>
-          <td class="rt" id="fsMnt">—</td>
-          <td class="rt" id="fsTyr">—</td>
-          <td class="rt" id="fsTol">—</td>
-          <td class="rt" id="fsIns">—</td>
-          <td class="rt" id="fsOth">—</td>
-          <td class="rt" id="fsCst">—</td>
-          <td class="rt" id="fsNet">—</td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
+  <div class="sec">Fleet Summary</div>
+  <div class="tw"><table class="gt"><thead><tr>
+    <th>#</th><th>Registration</th><th class="rt">Revenue</th><th class="rt">Fuel</th>
+    <th class="rt">Driver Pay</th><th class="rt">Maintenance</th><th class="rt">Tyres</th>
+    <th class="rt">Tolls</th><th class="rt">Insurance</th><th class="rt">Other</th>
+    <th class="rt">Total Cost</th><th class="rt">Net P/L</th>
+  </tr></thead>
+  <tbody id="fleetSumBody"></tbody>
+  <tfoot><tr><td colspan="2">Fleet Total</td>
+    <td class="rt" id="fsRev">—</td><td class="rt" id="fsFuel">—</td><td class="rt" id="fsDrv">—</td>
+    <td class="rt" id="fsMnt">—</td><td class="rt" id="fsTyr">—</td><td class="rt" id="fsTol">—</td>
+    <td class="rt" id="fsIns">—</td><td class="rt" id="fsOth">—</td>
+    <td class="rt" id="fsCst">—</td><td class="rt" id="fsNet">—</td>
+  </tr></tfoot></table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 3 — FUEL LOG                                        -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- FUEL -->
 <div class="panel" id="panel-fuel">
-
-  <div class="kpi-row cols-5">
-    <div class="kpi-card green"><div class="kpi-label">Total Litres</div><div class="kpi-value" id="fkL">0 L</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card amber"><div class="kpi-label">Total Cost</div><div class="kpi-value" id="fkC">R 0</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card red"><div class="kpi-label">Avg R/Litre</div><div class="kpi-value" id="fkR">—</div><div class="kpi-sub">Fleet avg</div></div>
-    <div class="kpi-card blue"><div class="kpi-label">Total km</div><div class="kpi-value" id="fkKm">0 km</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card black"><div class="kpi-label">Fleet km/L</div><div class="kpi-value" id="fkEff">—</div><div class="kpi-sub">Efficiency</div></div>
+  <div class="krow c5">
+    <div class="kc cg"><div class="kl">Total Litres</div><div class="kv" id="fkL">0 L</div><div class="ks">This month</div></div>
+    <div class="kc ca"><div class="kl">Total Cost</div><div class="kv" id="fkC">R 0</div><div class="ks">This month</div></div>
+    <div class="kc cr"><div class="kl">Avg R/Litre</div><div class="kv" id="fkR">—</div><div class="ks">Fleet avg</div></div>
+    <div class="kc cb"><div class="kl">Total km</div><div class="kv" id="fkKm">0 km</div><div class="ks">This month</div></div>
+    <div class="kc ck"><div class="kl">Fleet km/L</div><div class="kv" id="fkEff">—</div><div class="ks">Efficiency</div></div>
   </div>
-
-  <!-- Add Form -->
-  <div class="form-card">
-    <div class="form-card-title green-title">+ Add Fuel Entry</div>
-    <div class="form-grid cols-6">
-      <div class="form-field"><label>Date</label><input type="date" id="ffDate" /></div>
-      <div class="form-field"><label>Truck</label><select id="ffTruck"></select></div>
-      <div class="form-field"><label>Litres</label><input type="number" id="ffLitres" placeholder="0.00" min="0" step="0.1" /></div>
-      <div class="form-field"><label>Cost (R)</label><input type="number" id="ffCost" placeholder="0.00" min="0" step="0.01" /></div>
-      <div class="form-field"><label>km Travelled</label><input type="number" id="ffKm" placeholder="0" min="0" step="1" /></div>
-      <div class="form-field"><label>Notes</label><input type="text" id="ffNotes" placeholder="e.g. Engen N2" /></div>
+  <div class="card">
+    <div class="card-title" style="color:var(--gdk)">+ Add Fuel Entry</div>
+    <div class="fgrid c6">
+      <div class="fg"><label>Date</label><input type="date" id="ffDate"/></div>
+      <div class="fg"><label>Truck</label><select id="ffTruck"></select></div>
+      <div class="fg"><label>Litres</label><input type="number" id="ffLitres" placeholder="0.00" min="0" step="0.1"/></div>
+      <div class="fg"><label>Cost (R)</label><input type="number" id="ffCost" placeholder="0.00" min="0" step="0.01"/></div>
+      <div class="fg"><label>km Travelled</label><input type="number" id="ffKm" placeholder="0" min="0"/></div>
+      <div class="fg"><label>Notes</label><input type="text" id="ffNotes" placeholder="e.g. Engen N2"/></div>
     </div>
-    <div class="form-actions">
-      <button class="btn-primary" id="btnFuelAdd">+ Add</button>
-      <span class="form-msg" id="fuelMsg"></span>
+    <div style="margin-top:10px;display:flex;align-items:center;">
+      <button class="btn-p" onclick="fuelAdd()">+ Add</button>
+      <span class="fmsg" id="fuelMsg"></span>
     </div>
   </div>
-
-  <!-- Filter -->
   <div class="filter-bar">
-    <label>Filter by Truck:</label>
-    <select id="fuelFilter"></select>
+    <label>Filter:</label>
+    <select id="fuelFilter" onchange="fuelRender()"></select>
   </div>
-
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Date</th><th>#</th><th>Reg</th>
-          <th class="rt">Litres</th><th class="rt">Cost</th><th class="rt">R/L</th>
-          <th class="rt">km</th><th class="rt">km/L</th>
-          <th>Notes</th><th class="ct">Del</th>
-        </tr>
-      </thead>
-      <tbody id="fuelBody"></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="3">Total</td>
-          <td class="rt" id="fftL">—</td><td class="rt" id="fftC">—</td>
-          <td class="rt" id="fftR">—</td><td class="rt" id="fftKm">—</td>
-          <td class="rt" id="fftE">—</td><td colspan="2"></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
+  <div class="tw"><table class="gt"><thead><tr>
+    <th>Date</th><th>#</th><th>Reg</th><th class="rt">Litres</th><th class="rt">Cost</th>
+    <th class="rt">R/L</th><th class="rt">km</th><th class="rt">km/L</th><th>Notes</th><th class="ct">Del</th>
+  </tr></thead>
+  <tbody id="fuelBody"></tbody>
+  <tfoot><tr><td colspan="3">Total</td>
+    <td class="rt" id="fftL">—</td><td class="rt" id="fftC">—</td><td class="rt" id="fftR">—</td>
+    <td class="rt" id="fftKm">—</td><td class="rt" id="fftE">—</td><td colspan="2"></td>
+  </tr></tfoot></table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 4 — ODOMETER                                        -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- ODOMETER -->
 <div class="panel" id="panel-odo">
-
-  <div class="kpi-row cols-4">
-    <div class="kpi-card green"><div class="kpi-label">Total km</div><div class="kpi-value" id="okTotal">0 km</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card amber"><div class="kpi-label">Avg km/Entry</div><div class="kpi-value" id="okAvg">0 km</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card blue"><div class="kpi-label">Entries</div><div class="kpi-value" id="okCount">0</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card black"><div class="kpi-label">Busiest Truck</div><div class="kpi-value" id="okBest">—</div><div class="kpi-sub">By km</div></div>
+  <div class="krow c4">
+    <div class="kc cg"><div class="kl">Total km</div><div class="kv" id="okTotal">0 km</div><div class="ks">This month</div></div>
+    <div class="kc ca"><div class="kl">Avg km/Entry</div><div class="kv" id="okAvg">0 km</div><div class="ks">This month</div></div>
+    <div class="kc cb"><div class="kl">Entries</div><div class="kv" id="okCount">0</div><div class="ks">This month</div></div>
+    <div class="kc ck"><div class="kl">Busiest Truck</div><div class="kv" id="okBest">—</div><div class="ks">By km</div></div>
   </div>
-
-  <div class="form-card">
-    <div class="form-card-title green-title">+ Add Odometer Entry</div>
-    <div class="form-grid cols-5">
-      <div class="form-field"><label>Date</label><input type="date" id="ofDate" /></div>
-      <div class="form-field"><label>Truck</label><select id="ofTruck"></select></div>
-      <div class="form-field"><label>Driver</label><select id="ofDriver"></select></div>
-      <div class="form-field"><label>Start km</label><input type="number" id="ofStart" placeholder="0" min="0" /></div>
-      <div class="form-field"><label>End km</label><input type="number" id="ofEnd" placeholder="0" min="0" /></div>
+  <div class="card">
+    <div class="card-title" style="color:var(--gdk)">+ Add Odometer Entry</div>
+    <div class="fgrid c5">
+      <div class="fg"><label>Date</label><input type="date" id="ofDate"/></div>
+      <div class="fg"><label>Truck</label><select id="ofTruck"></select></div>
+      <div class="fg"><label>Driver</label><select id="ofDriver"></select></div>
+      <div class="fg"><label>Start km</label><input type="number" id="ofStart" placeholder="0" min="0"/></div>
+      <div class="fg"><label>End km</label><input type="number" id="ofEnd" placeholder="0" min="0"/></div>
     </div>
-    <div class="form-actions">
-      <button class="btn-primary" id="btnOdoAdd">+ Add</button>
-      <span class="form-msg" id="odoMsg"></span>
+    <div style="margin-top:10px;display:flex;align-items:center;">
+      <button class="btn-p" onclick="odoAdd()">+ Add</button>
+      <span class="fmsg" id="odoMsg"></span>
     </div>
   </div>
-
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Date</th><th>#</th><th>Reg</th><th>Driver</th>
-          <th class="rt">Start km</th><th class="rt">End km</th>
-          <th class="rt">Distance</th><th class="ct">Del</th>
-        </tr>
-      </thead>
-      <tbody id="odoBody"></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="4">Total</td><td class="rt">—</td><td class="rt">—</td>
-          <td class="rt" id="oftD">—</td><td></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
+  <div class="tw"><table class="gt"><thead><tr>
+    <th>Date</th><th>#</th><th>Reg</th><th>Driver</th>
+    <th class="rt">Start km</th><th class="rt">End km</th><th class="rt">Distance</th><th class="ct">Del</th>
+  </tr></thead>
+  <tbody id="odoBody"></tbody>
+  <tfoot><tr><td colspan="4">Total</td><td class="rt">—</td><td class="rt">—</td>
+    <td class="rt" id="oftD">—</td><td></td>
+  </tr></tfoot></table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 5 — DRIVERS                                         -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DRIVERS -->
 <div class="panel" id="panel-drivers">
-
-  <div class="section-header">Driver Scorecards — This Month</div>
+  <div class="sec">Driver Scorecards — This Month</div>
   <div class="scorecard-grid" id="scorecardGrid"></div>
-
-  <div class="section-header">Driver Log Entries</div>
-
-  <div class="form-card">
-    <div class="form-card-title blue-title">+ Add Driver Entry</div>
-    <div class="form-grid cols-6">
-      <div class="form-field"><label>Date</label><input type="date" id="drfDate" /></div>
-      <div class="form-field"><label>Driver Name</label><input type="text" id="drfName" placeholder="Full name" /></div>
-      <div class="form-field"><label>Licence / ID No.</label><input type="text" id="drfLic" placeholder="PDP / ID" /></div>
-      <div class="form-field"><label>Truck Assigned</label><select id="drfTruck"></select></div>
-      <div class="form-field"><label>Hours on Duty</label><input type="number" id="drfHours" placeholder="0" min="0" step="0.5" /></div>
-      <div class="form-field"><label>Status</label>
+  <div class="sec">Driver Log Entries</div>
+  <div class="card">
+    <div class="card-title" style="color:var(--blue)">+ Add Driver Entry</div>
+    <div class="fgrid c6">
+      <div class="fg"><label>Date</label><input type="date" id="drfDate"/></div>
+      <div class="fg"><label>Driver Name</label><input type="text" id="drfName" placeholder="Full name"/></div>
+      <div class="fg"><label>Licence / ID</label><input type="text" id="drfLic" placeholder="PDP / ID"/></div>
+      <div class="fg"><label>Truck Assigned</label><select id="drfTruck"></select></div>
+      <div class="fg"><label>Hours on Duty</label><input type="number" id="drfHours" placeholder="0" min="0" step="0.5"/></div>
+      <div class="fg"><label>Status</label>
         <select id="drfStatus">
           <option value="Active">Active</option>
           <option value="Off">Off Duty</option>
@@ -307,400 +356,866 @@
         </select>
       </div>
     </div>
-    <div class="form-grid cols-4" style="margin-top:10px;">
-      <div class="form-field"><label>Incidents</label><input type="number" id="drfInc" placeholder="0" min="0" /></div>
-      <div class="form-field"><label>On-Time Deliveries</label><input type="number" id="drfOntime" placeholder="0" min="0" /></div>
-      <div class="form-field"><label>Total Deliveries</label><input type="number" id="drfDel" placeholder="0" min="0" /></div>
-      <div class="form-field"><label>Notes</label><input type="text" id="drfNotes" placeholder="Optional" /></div>
+    <div class="fgrid c4" style="margin-top:10px;">
+      <div class="fg"><label>Incidents</label><input type="number" id="drfInc" placeholder="0" min="0"/></div>
+      <div class="fg"><label>On-Time Deliveries</label><input type="number" id="drfOntime" placeholder="0" min="0"/></div>
+      <div class="fg"><label>Total Deliveries</label><input type="number" id="drfDel" placeholder="0" min="0"/></div>
+      <div class="fg"><label>Notes</label><input type="text" id="drfNotes" placeholder="Optional"/></div>
     </div>
-    <div class="form-actions">
-      <button class="btn-primary" id="btnDriverAdd">+ Add Entry</button>
-      <span class="form-msg" id="driverMsg"></span>
+    <div style="margin-top:10px;display:flex;align-items:center;">
+      <button class="btn-p" onclick="driverAdd()">+ Add Entry</button>
+      <span class="fmsg" id="driverMsg"></span>
     </div>
   </div>
-
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Date</th><th>Driver</th><th>Licence/ID</th><th>#</th><th>Reg</th>
-          <th class="rt">Hours</th><th class="rt">Incidents</th>
-          <th class="rt">On-Time%</th><th class="rt">Deliveries</th>
-          <th class="ct">Status</th><th class="ct">Del</th>
-        </tr>
-      </thead>
-      <tbody id="driverBody"></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="5">Total</td>
-          <td class="rt" id="drftH">—</td>
-          <td class="rt" id="drftI">—</td>
-          <td colspan="4"></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
+  <div class="tw"><table class="gt"><thead><tr>
+    <th>Date</th><th>Driver</th><th>Licence/ID</th><th>#</th><th>Reg</th>
+    <th class="rt">Hours</th><th class="rt">Incidents</th><th class="rt">On-Time%</th>
+    <th class="rt">Deliveries</th><th class="ct">Status</th><th class="ct">Del</th>
+  </tr></thead>
+  <tbody id="driverBody"></tbody>
+  <tfoot><tr><td colspan="5">Total</td>
+    <td class="rt" id="drftH">—</td><td class="rt" id="drftI">—</td>
+    <td colspan="4"></td>
+  </tr></tfoot></table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 6 — MAINTENANCE                                     -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- MAINTENANCE -->
 <div class="panel" id="panel-maint">
-
-  <div class="kpi-row cols-4">
-    <div class="kpi-card red"><div class="kpi-label">Total Spend</div><div class="kpi-value" id="mkCost">R 0</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card amber"><div class="kpi-label">Services Done</div><div class="kpi-value" id="mkCount">0</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card black"><div class="kpi-label">Due Soon</div><div class="kpi-value" id="mkDue">0</div><div class="kpi-sub">Within 5 000 km</div></div>
-    <div class="kpi-card red"><div class="kpi-label">Overdue</div><div class="kpi-value" id="mkOver">0</div><div class="kpi-sub">Past due km</div></div>
+  <div class="krow c4">
+    <div class="kc cr"><div class="kl">Total Spend</div><div class="kv" id="mkCost">R 0</div><div class="ks">This month</div></div>
+    <div class="kc ca"><div class="kl">Services Done</div><div class="kv" id="mkCount">0</div><div class="ks">This month</div></div>
+    <div class="kc ck"><div class="kl">Due Soon</div><div class="kv" id="mkDue">0</div><div class="ks">Within 5 000 km</div></div>
+    <div class="kc cr"><div class="kl">Overdue</div><div class="kv" id="mkOver">0</div><div class="ks">Past due km</div></div>
   </div>
-
-  <div class="form-card">
-    <div class="form-card-title red-title">+ Add Maintenance Entry</div>
-    <div class="form-grid cols-6">
-      <div class="form-field"><label>Date</label><input type="date" id="mfDate" /></div>
-      <div class="form-field"><label>Truck</label><select id="mfTruck"></select></div>
-      <div class="form-field"><label>Service Type</label>
+  <div class="card">
+    <div class="card-title" style="color:var(--red)">+ Add Maintenance Entry</div>
+    <div class="fgrid c6">
+      <div class="fg"><label>Date</label><input type="date" id="mfDate"/></div>
+      <div class="fg"><label>Truck</label><select id="mfTruck"></select></div>
+      <div class="fg"><label>Service Type</label>
         <select id="mfType">
-          <option>Oil Change</option><option>Tyre Rotation</option>
-          <option>Brake Service</option><option>Engine Service</option>
-          <option>Transmission</option><option>Electrical</option>
-          <option>Suspension</option><option>Roadworthy</option>
-          <option>Other</option>
+          <option>Oil Change</option><option>Tyre Rotation</option><option>Brake Service</option>
+          <option>Engine Service</option><option>Transmission</option><option>Electrical</option>
+          <option>Suspension</option><option>Roadworthy</option><option>Other</option>
         </select>
       </div>
-      <div class="form-field"><label>Workshop</label><input type="text" id="mfShop" placeholder="Workshop name" /></div>
-      <div class="form-field"><label>Cost (R)</label><input type="number" id="mfCost" placeholder="0" min="0" step="100" /></div>
-      <div class="form-field"><label>Next Service (km)</label><input type="number" id="mfNext" placeholder="e.g. 250000" min="0" step="1000" /></div>
+      <div class="fg"><label>Workshop</label><input type="text" id="mfShop" placeholder="Workshop name"/></div>
+      <div class="fg"><label>Cost (R)</label><input type="number" id="mfCost" placeholder="0" min="0" step="100"/></div>
+      <div class="fg"><label>Next Service (km)</label><input type="number" id="mfNext" placeholder="e.g. 250000" min="0" step="1000"/></div>
     </div>
-    <div class="form-grid cols-1" style="margin-top:8px;">
-      <div class="form-field"><label>Notes</label><input type="text" id="mfNotes" placeholder="Details, parts replaced…" /></div>
+    <div class="fgrid c1" style="margin-top:8px;">
+      <div class="fg"><label>Notes</label><input type="text" id="mfNotes" placeholder="Details, parts replaced…"/></div>
     </div>
-    <div class="form-actions">
-      <button class="btn-primary" id="btnMaintAdd">+ Add</button>
-      <span class="form-msg" id="maintMsg"></span>
+    <div style="margin-top:10px;display:flex;align-items:center;">
+      <button class="btn-p" onclick="maintAdd()">+ Add</button>
+      <span class="fmsg" id="maintMsg"></span>
     </div>
   </div>
-
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Date</th><th>#</th><th>Reg</th><th>Type</th><th>Workshop</th>
-          <th class="rt">Cost</th><th class="rt">Next Due (km)</th>
-          <th>Notes</th><th class="ct">Del</th>
-        </tr>
-      </thead>
-      <tbody id="maintBody"></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="5">Total</td>
-          <td class="rt" id="mftC">—</td>
-          <td colspan="3"></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
+  <div class="tw"><table class="gt"><thead><tr>
+    <th>Date</th><th>#</th><th>Reg</th><th>Type</th><th>Workshop</th>
+    <th class="rt">Cost</th><th class="rt">Next Due (km)</th><th>Notes</th><th class="ct">Del</th>
+  </tr></thead>
+  <tbody id="maintBody"></tbody>
+  <tfoot><tr><td colspan="5">Total</td><td class="rt" id="mftC">—</td><td colspan="3"></td></tr></tfoot>
+  </table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 7 — TYRE LOG                                        -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TYRE LOG -->
 <div class="panel" id="panel-tyre">
-
-  <div class="kpi-row cols-4">
-    <div class="kpi-card red"><div class="kpi-label">Total Spend</div><div class="kpi-value" id="tkCost">R 0</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card amber"><div class="kpi-label">New Tyres</div><div class="kpi-value" id="tkNew">0</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card green"><div class="kpi-label">Repairs</div><div class="kpi-value" id="tkRep">0</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card black"><div class="kpi-label">Total Entries</div><div class="kpi-value" id="tkCount">0</div><div class="kpi-sub">All time</div></div>
+  <div class="krow c4">
+    <div class="kc cr"><div class="kl">Total Spend</div><div class="kv" id="tkCost">R 0</div><div class="ks">This month</div></div>
+    <div class="kc ca"><div class="kl">New Tyres</div><div class="kv" id="tkNew">0</div><div class="ks">This month</div></div>
+    <div class="kc cg"><div class="kl">Repairs</div><div class="kv" id="tkRep">0</div><div class="ks">This month</div></div>
+    <div class="kc ck"><div class="kl">Total Entries</div><div class="kv" id="tkCount">0</div><div class="ks">All time</div></div>
   </div>
-
-  <div class="form-card">
-    <div class="form-card-title">+ Add Tyre Entry</div>
-    <div class="form-grid cols-6">
-      <div class="form-field"><label>Date</label><input type="date" id="tfDate" /></div>
-      <div class="form-field"><label>Truck</label><select id="tfTruck"></select></div>
-      <div class="form-field"><label>Position</label>
+  <div class="card">
+    <div class="card-title">+ Add Tyre Entry</div>
+    <div class="fgrid c6">
+      <div class="fg"><label>Date</label><input type="date" id="tfDate"/></div>
+      <div class="fg"><label>Truck</label><select id="tfTruck"></select></div>
+      <div class="fg"><label>Position</label>
         <select id="tfPos">
           <option>Front Left</option><option>Front Right</option>
           <option>Rear Left Inner</option><option>Rear Left Outer</option>
           <option>Rear Right Inner</option><option>Rear Right Outer</option>
-          <option>Trailer Left</option><option>Trailer Right</option>
-          <option>Spare</option>
+          <option>Trailer Left</option><option>Trailer Right</option><option>Spare</option>
         </select>
       </div>
-      <div class="form-field"><label>Brand</label><input type="text" id="tfBrand" placeholder="e.g. Bridgestone" /></div>
-      <div class="form-field"><label>Action</label>
+      <div class="fg"><label>Brand</label><input type="text" id="tfBrand" placeholder="e.g. Bridgestone"/></div>
+      <div class="fg"><label>Action</label>
         <select id="tfAction">
-          <option>New Tyre</option><option>Rotation</option>
-          <option>Repair</option><option>Replace</option>
-          <option>Inspection</option>
+          <option>New Tyre</option><option>Rotation</option><option>Repair</option>
+          <option>Replace</option><option>Inspection</option>
         </select>
       </div>
-      <div class="form-field"><label>Cost (R)</label><input type="number" id="tfCost" placeholder="0" min="0" step="50" /></div>
+      <div class="fg"><label>Cost (R)</label><input type="number" id="tfCost" placeholder="0" min="0" step="50"/></div>
     </div>
-    <div class="form-grid cols-2" style="margin-top:8px;">
-      <div class="form-field"><label>Tread Depth (mm)</label><input type="number" id="tfTread" placeholder="e.g. 8" min="0" step="0.5" /></div>
-      <div class="form-field"><label>Notes</label><input type="text" id="tfNotes" placeholder="Optional" /></div>
+    <div class="fgrid c2" style="margin-top:8px;">
+      <div class="fg"><label>Tread Depth (mm)</label><input type="number" id="tfTread" placeholder="e.g. 8" min="0" step="0.5"/></div>
+      <div class="fg"><label>Notes</label><input type="text" id="tfNotes" placeholder="Optional"/></div>
     </div>
-    <div class="form-actions">
-      <button class="btn-primary" id="btnTyreAdd">+ Add</button>
-      <span class="form-msg" id="tyreMsg"></span>
+    <div style="margin-top:10px;display:flex;align-items:center;">
+      <button class="btn-p" onclick="tyreAdd()">+ Add</button>
+      <span class="fmsg" id="tyreMsg"></span>
     </div>
   </div>
-
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Date</th><th>#</th><th>Reg</th><th>Position</th><th>Brand</th>
-          <th>Action</th><th class="rt">Tread (mm)</th><th class="rt">Cost</th>
-          <th>Notes</th><th class="ct">Del</th>
-        </tr>
-      </thead>
-      <tbody id="tyreBody"></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="7">Total</td>
-          <td class="rt" id="tftC">—</td>
-          <td colspan="2"></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
+  <div class="tw"><table class="gt"><thead><tr>
+    <th>Date</th><th>#</th><th>Reg</th><th>Position</th><th>Brand</th><th>Action</th>
+    <th class="rt">Tread (mm)</th><th class="rt">Cost</th><th>Notes</th><th class="ct">Del</th>
+  </tr></thead>
+  <tbody id="tyreBody"></tbody>
+  <tfoot><tr><td colspan="7">Total</td><td class="rt" id="tftC">—</td><td colspan="2"></td></tr></tfoot>
+  </table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 8 — TRIP LOG                                        -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TRIP LOG -->
 <div class="panel" id="panel-trip">
-
-  <div class="kpi-row cols-5">
-    <div class="kpi-card green"><div class="kpi-label">Total Trips</div><div class="kpi-value" id="trpCount">0</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card amber"><div class="kpi-label">Total Distance</div><div class="kpi-value" id="trpKm">0 km</div><div class="kpi-sub">This month</div></div>
-    <div class="kpi-card blue"><div class="kpi-label">Avg Trip</div><div class="kpi-value" id="trpAvg">0 km</div><div class="kpi-sub">Per trip</div></div>
-    <div class="kpi-card purple"><div class="kpi-label">Total Hours</div><div class="kpi-value" id="trpHrs">0</div><div class="kpi-sub">Drive time</div></div>
-    <div class="kpi-card black"><div class="kpi-label">Active Trucks</div><div class="kpi-value" id="trpTrucks">0</div><div class="kpi-sub">This month</div></div>
+  <div class="krow c5">
+    <div class="kc cg"><div class="kl">Total Trips</div><div class="kv" id="trpCount">0</div><div class="ks">This month</div></div>
+    <div class="kc ca"><div class="kl">Total Distance</div><div class="kv" id="trpKm">0 km</div><div class="ks">This month</div></div>
+    <div class="kc cb"><div class="kl">Avg Trip</div><div class="kv" id="trpAvg">0 km</div><div class="ks">Per trip</div></div>
+    <div class="kc cp"><div class="kl">Total Hours</div><div class="kv" id="trpHrs">0</div><div class="ks">Drive time</div></div>
+    <div class="kc ck"><div class="kl">Active Trucks</div><div class="kv" id="trpTrucks">0</div><div class="ks">This month</div></div>
   </div>
-
-  <div class="form-card">
-    <div class="form-card-title purple-title">+ Add Trip</div>
-    <div class="form-grid cols-4">
-      <div class="form-field"><label>Date</label><input type="date" id="trfDate" /></div>
-      <div class="form-field"><label>Truck</label><select id="trfTruck"></select></div>
-      <div class="form-field"><label>Driver</label><select id="trfDriver"></select></div>
-      <div class="form-field"><label>Distance (km)</label><input type="number" id="trfDist" placeholder="0" min="0" /></div>
+  <div class="card">
+    <div class="card-title" style="color:var(--purple)">+ Add Trip</div>
+    <div class="fgrid c4">
+      <div class="fg"><label>Date</label><input type="date" id="trfDate"/></div>
+      <div class="fg"><label>Truck</label><select id="trfTruck"></select></div>
+      <div class="fg"><label>Driver</label><select id="trfDriver"></select></div>
+      <div class="fg"><label>Distance (km)</label><input type="number" id="trfDist" placeholder="0" min="0"/></div>
     </div>
-    <div class="form-grid cols-4" style="margin-top:8px;">
-      <div class="form-field"><label>Origin</label><input type="text" id="trfOrigin" placeholder="e.g. Durban" /></div>
-      <div class="form-field"><label>Destination</label><input type="text" id="trfDest" placeholder="e.g. Johannesburg" /></div>
-      <div class="form-field"><label>Depart</label><input type="time" id="trfDep" /></div>
-      <div class="form-field"><label>Arrive</label><input type="time" id="trfArr" /></div>
+    <div class="fgrid c4" style="margin-top:8px;">
+      <div class="fg"><label>Origin</label><input type="text" id="trfOrigin" placeholder="e.g. Durban"/></div>
+      <div class="fg"><label>Destination</label><input type="text" id="trfDest" placeholder="e.g. Johannesburg"/></div>
+      <div class="fg"><label>Depart</label><input type="time" id="trfDep"/></div>
+      <div class="fg"><label>Arrive</label><input type="time" id="trfArr"/></div>
     </div>
-    <div class="form-grid cols-1" style="margin-top:8px;">
-      <div class="form-field"><label>Load Description</label><input type="text" id="trfLoad" placeholder="e.g. Steel coils — 28 tonnes" /></div>
+    <div class="fgrid c1" style="margin-top:8px;">
+      <div class="fg"><label>Load Description</label><input type="text" id="trfLoad" placeholder="e.g. Steel coils — 28 tonnes"/></div>
     </div>
-    <div class="form-actions">
-      <button class="btn-primary" id="btnTripAdd">+ Add Trip</button>
-      <span class="form-msg" id="tripMsg"></span>
+    <div style="margin-top:10px;display:flex;align-items:center;">
+      <button class="btn-p" onclick="tripAdd()">+ Add Trip</button>
+      <span class="fmsg" id="tripMsg"></span>
     </div>
   </div>
-
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Date</th><th>#</th><th>Reg</th><th>Driver</th>
-          <th>Origin</th><th>Destination</th>
-          <th class="rt">Distance</th><th>Depart</th><th>Arrive</th>
-          <th>Load</th><th class="ct">Del</th>
-        </tr>
-      </thead>
-      <tbody id="tripBody"></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="6">Total</td>
-          <td class="rt" id="trftD">—</td>
-          <td colspan="4"></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
+  <div class="tw"><table class="gt"><thead><tr>
+    <th>Date</th><th>#</th><th>Reg</th><th>Driver</th><th>Origin</th><th>Destination</th>
+    <th class="rt">Distance</th><th>Depart</th><th>Arrive</th><th>Load</th><th class="ct">Del</th>
+  </tr></thead>
+  <tbody id="tripBody"></tbody>
+  <tfoot><tr><td colspan="6">Total</td><td class="rt" id="trftD">—</td><td colspan="4"></td></tr></tfoot>
+  </table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 9 — BD PIPELINE                                     -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- BD PIPELINE -->
 <div class="panel" id="panel-bd">
-
-  <div class="kpi-row cols-6">
-    <div class="kpi-card green"><div class="kpi-label">Pipeline Value</div><div class="kpi-value" id="bdkPipe">R 0</div><div class="kpi-sub">Active deals</div></div>
-    <div class="kpi-card amber"><div class="kpi-label">Weighted Forecast</div><div class="kpi-value" id="bdkFcast">R 0</div><div class="kpi-sub">Prob. adjusted</div></div>
-    <div class="kpi-card blue"><div class="kpi-label">Active Deals</div><div class="kpi-value" id="bdkDeals">0</div><div class="kpi-sub">In pipeline</div></div>
-    <div class="kpi-card black"><div class="kpi-label">Won This Month</div><div class="kpi-value" id="bdkWon">R 0</div><div class="kpi-sub">Closed won</div></div>
-    <div class="kpi-card green"><div class="kpi-label">Win Rate</div><div class="kpi-value" id="bdkWinRate">0%</div><div class="kpi-sub">Won vs closed</div></div>
-    <div class="kpi-card red"><div class="kpi-label">Avg Deal Size</div><div class="kpi-value" id="bdkAvg">R 0</div><div class="kpi-sub">Active deals</div></div>
+  <div class="krow c6">
+    <div class="kc cg"><div class="kl">Pipeline Value</div><div class="kv" id="bdkPipe">R 0</div><div class="ks">Active deals</div></div>
+    <div class="kc ca"><div class="kl">Weighted Forecast</div><div class="kv" id="bdkFcast">R 0</div><div class="ks">Prob. adjusted</div></div>
+    <div class="kc cb"><div class="kl">Active Deals</div><div class="kv" id="bdkDeals">0</div><div class="ks">In pipeline</div></div>
+    <div class="kc ck"><div class="kl">Won This Month</div><div class="kv" id="bdkWon">R 0</div><div class="ks">Closed won</div></div>
+    <div class="kc cg"><div class="kl">Win Rate</div><div class="kv" id="bdkWinRate">0%</div><div class="ks">Won vs closed</div></div>
+    <div class="kc cr"><div class="kl">Avg Deal Size</div><div class="kv" id="bdkAvg">R 0</div><div class="ks">Active deals</div></div>
   </div>
-
-  <div class="section-header">Pipeline Funnel</div>
+  <div class="sec">Pipeline Funnel</div>
   <div class="funnel-wrap" id="bdFunnel"></div>
-
-  <div class="section-header">Revenue Streams</div>
+  <div class="sec">Revenue Streams</div>
   <div class="stream-row" id="bdStreams"></div>
-
-  <div class="form-card">
-    <div class="form-card-title green-title">+ Add Deal</div>
-    <div class="form-grid cols-4">
-      <div class="form-field"><label>Company / Prospect</label><input type="text" id="pfCompany" placeholder="Company name" /></div>
-      <div class="form-field"><label>Contact Person</label><input type="text" id="pfContact" placeholder="Name &amp; surname" /></div>
-      <div class="form-field"><label>Contact Number</label><input type="text" id="pfPhone" placeholder="+27…" /></div>
-      <div class="form-field"><label>BD Rep</label><input type="text" id="pfRep" placeholder="Rep name" /></div>
+  <div class="card">
+    <div class="card-title" style="color:var(--gdk)">+ Add Deal</div>
+    <div class="fgrid c4">
+      <div class="fg"><label>Company / Prospect</label><input type="text" id="pfCompany" placeholder="Company name"/></div>
+      <div class="fg"><label>Contact Person</label><input type="text" id="pfContact" placeholder="Name &amp; surname"/></div>
+      <div class="fg"><label>Contact Number</label><input type="text" id="pfPhone" placeholder="+27…"/></div>
+      <div class="fg"><label>BD Rep</label><input type="text" id="pfRep" placeholder="Rep name"/></div>
     </div>
-    <div class="form-grid cols-5" style="margin-top:8px;">
-      <div class="form-field"><label>Revenue Stream</label>
+    <div class="fgrid c5" style="margin-top:8px;">
+      <div class="fg"><label>Revenue Stream</label>
         <select id="pfStream">
           <option value="Trucks">Trucks</option>
           <option value="Forklift">Forklift Hire</option>
           <option value="VAS">Value-Added Services</option>
         </select>
       </div>
-      <div class="form-field"><label>Stage</label>
+      <div class="fg"><label>Stage</label>
         <select id="pfStage">
-          <option value="Lead">Lead</option>
-          <option value="Qualified">Qualified</option>
-          <option value="Quoted">Quoted</option>
-          <option value="Negotiation">Negotiation</option>
-          <option value="Won">Won</option>
-          <option value="Lost">Lost</option>
+          <option value="Lead">Lead</option><option value="Qualified">Qualified</option>
+          <option value="Quoted">Quoted</option><option value="Negotiation">Negotiation</option>
+          <option value="Won">Won</option><option value="Lost">Lost</option>
         </select>
       </div>
-      <div class="form-field"><label>Deal Value (R)</label><input type="number" id="pfValue" placeholder="0" min="0" step="1000" /></div>
-      <div class="form-field"><label>Probability %</label>
+      <div class="fg"><label>Deal Value (R)</label><input type="number" id="pfValue" placeholder="0" min="0" step="1000"/></div>
+      <div class="fg"><label>Probability %</label>
         <select id="pfProb">
-          <option value="10">10% — Lead</option>
-          <option value="25">25% — Qualified</option>
-          <option value="50">50% — Quoted</option>
-          <option value="75">75% — Negotiation</option>
-          <option value="100">100% — Won</option>
-          <option value="0">0% — Lost</option>
+          <option value="10">10% — Lead</option><option value="25">25% — Qualified</option>
+          <option value="50">50% — Quoted</option><option value="75">75% — Negotiation</option>
+          <option value="100">100% — Won</option><option value="0">0% — Lost</option>
         </select>
       </div>
-      <div class="form-field"><label>Priority</label>
+      <div class="fg"><label>Priority</label>
         <select id="pfPriority">
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
+          <option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option>
         </select>
       </div>
     </div>
-    <div class="form-grid cols-4" style="margin-top:8px;">
-      <div class="form-field"><label>Date Added</label><input type="date" id="pfDate" /></div>
-      <div class="form-field"><label>Expected Close</label><input type="date" id="pfClose" /></div>
-      <div class="form-field"><label>Follow-up Date</label><input type="date" id="pfFollowup" /></div>
-      <div class="form-field"><label>Notes</label><input type="text" id="pfNotes" placeholder="Key requirements…" /></div>
+    <div class="fgrid c4" style="margin-top:8px;">
+      <div class="fg"><label>Date Added</label><input type="date" id="pfDate"/></div>
+      <div class="fg"><label>Expected Close</label><input type="date" id="pfClose"/></div>
+      <div class="fg"><label>Follow-up Date</label><input type="date" id="pfFollowup"/></div>
+      <div class="fg"><label>Notes</label><input type="text" id="pfNotes" placeholder="Key requirements…"/></div>
     </div>
-    <div class="form-actions">
-      <button class="btn-primary" id="btnDealAdd">+ Add Deal</button>
-      <span class="form-msg" id="dealMsg"></span>
+    <div style="margin-top:10px;display:flex;align-items:center;">
+      <button class="btn-p" onclick="dealAdd()">+ Add Deal</button>
+      <span class="fmsg" id="dealMsg"></span>
     </div>
   </div>
-
-  <!-- Filters -->
   <div class="filter-bar">
     <label>Stage:</label>
-    <select id="filterStage">
+    <select id="filterStage" onchange="pipelineRender()">
       <option value="">All Stages</option>
-      <option value="Lead">Lead</option>
-      <option value="Qualified">Qualified</option>
-      <option value="Quoted">Quoted</option>
-      <option value="Negotiation">Negotiation</option>
-      <option value="Won">Won</option>
-      <option value="Lost">Lost</option>
+      <option value="Lead">Lead</option><option value="Qualified">Qualified</option>
+      <option value="Quoted">Quoted</option><option value="Negotiation">Negotiation</option>
+      <option value="Won">Won</option><option value="Lost">Lost</option>
     </select>
     <label>Stream:</label>
-    <select id="filterStream">
+    <select id="filterStream" onchange="pipelineRender()">
       <option value="">All Streams</option>
-      <option value="Trucks">Trucks</option>
-      <option value="Forklift">Forklift Hire</option>
+      <option value="Trucks">Trucks</option><option value="Forklift">Forklift Hire</option>
       <option value="VAS">Value-Added Services</option>
     </select>
   </div>
-
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Company</th><th>Contact</th><th>Rep</th><th>Stream</th>
-          <th class="ct">Stage</th><th class="rt">Value</th>
-          <th class="rt">Prob%</th><th class="rt">Wtd Value</th>
-          <th class="ct">Priority</th><th>Close Date</th>
-          <th>Follow-up</th><th>Notes</th><th class="ct">Del</th>
-        </tr>
-      </thead>
-      <tbody id="pipelineBody"></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="5">Totals</td>
-          <td class="rt" id="pftVal">—</td>
-          <td></td>
-          <td class="rt" id="pftWtd">—</td>
-          <td colspan="5"></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
+  <div class="tw"><table class="gt"><thead><tr>
+    <th>Company</th><th>Contact</th><th>Rep</th><th>Stream</th>
+    <th class="ct">Stage</th><th class="rt">Value</th><th class="rt">Prob%</th>
+    <th class="rt">Wtd Value</th><th class="ct">Priority</th>
+    <th>Close Date</th><th>Follow-up</th><th>Notes</th><th class="ct">Del</th>
+  </tr></thead>
+  <tbody id="pipelineBody"></tbody>
+  <tfoot><tr><td colspan="5">Totals</td>
+    <td class="rt" id="pftVal">—</td><td></td><td class="rt" id="pftWtd">—</td>
+    <td colspan="5"></td>
+  </tr></tfoot></table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 10 — BOARDROOM REPORT                               -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- REPORT -->
 <div class="panel" id="panel-report">
-  <div class="report-actions">
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
     <button class="btn-report" onclick="window.print()">🖨 Print Report</button>
-    <span style="font-size:11px;color:var(--muted);">Report pulls live data from all modules.</span>
+    <span style="font-size:11px;color:var(--muted)">Report pulls live data from all modules.</span>
   </div>
   <div class="report-preview" id="reportPreview">
-    <p style="color:var(--mlt);font-style:italic;font-size:12px;">Enter data in the modules then return here to view your report.</p>
+    <p style="color:var(--mlt);font-style:italic;font-size:12px">Enter data in the modules then return here to view your report.</p>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  PANEL 11 — EXPORT                                         -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- EXPORT -->
 <div class="panel" id="panel-export">
-  <div class="section-header">Export &amp; Save</div>
-  <div class="form-card" style="max-width:520px;">
-    <div class="form-card-title">Download Options</div>
+  <div class="sec">Export &amp; Save</div>
+  <div class="card" style="max-width:520px;">
+    <div class="card-title">Download Options</div>
     <p style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.65;">
       All modules export together. Save as HTML to keep the full interactive Operations Centre.
     </p>
     <div class="export-row">
-      <button class="btn-export csv" id="btnCSV">⬇ Export CSV</button>
-      <button class="btn-export pdf" id="btnPDF">⬇ Save as PDF</button>
-      <button class="btn-export htm" id="btnHTML">⬇ Save as HTML</button>
+      <button class="btn-ex csv" id="btnCSV">⬇ Export CSV</button>
+      <button class="btn-ex pdf" id="btnPDF">⬇ Save as PDF</button>
+      <button class="btn-ex htm" id="btnHTML">⬇ Save as HTML</button>
     </div>
-    <p style="font-size:10px;color:var(--mlt);margin-top:14px;line-height:1.65;">
-      💡 <strong>Save as HTML</strong> is your master file — it contains all your data and the full app.
-    </p>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  FOOTER                                                     -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<footer class="page-footer">
+<div class="page-footer">
   <span>HRM Holdings (Pty) Ltd &nbsp;·&nbsp; HRMP Logistics (Pty) Ltd &nbsp;·&nbsp; Operations Centre &nbsp;·&nbsp; KwaZulu-Natal</span>
   <span>Delivering. Our Promise.</span>
-</footer>
+</div>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--  SCRIPTS                                                    -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<script src="app.js"></script>
+<script>
+// ── CONSTANTS ────────────────────────────────────────────────────
+var TRUCKS=[{id:1,reg:"BM 98 KZ ZN"},{id:2,reg:"BD 29 LG ZN"},{id:3,reg:"DD 76 MH ZN"},{id:4,reg:"BJ 58 SW ZN"},{id:5,reg:"BD 29 LG ZN"},{id:6,reg:"CB 89 JK ZN"}];
+var EXP_CATS=["Fuel","Driver Pay","Maintenance","Tyres & Parts","Toll / Levies","Insurance","Other"];
+var STAGES=["Lead","Qualified","Quoted","Negotiation","Won","Lost"];
+var STAGE_PROBS={Lead:10,Qualified:25,Quoted:50,Negotiation:75,Won:100,Lost:0};
+var STREAMS={Trucks:"Trucks",Forklift:"Forklift Hire",VAS:"Value-Added Services"};
 
+// ── STATE ─────────────────────────────────────────────────────────
+var state={month:"",idCounter:0,incomeRows:{},expenseRows:{},fuelEntries:[],odoEntries:[],driverEntries:[],maintEntries:[],tyreEntries:[],tripEntries:[],deals:[]};
+TRUCKS.forEach(function(t){state.incomeRows[t.id]=[];state.expenseRows[t.id]=[];});
+
+// ── UTILS ─────────────────────────────────────────────────────────
+function uid(){return ++state.idCounter;}
+function money(n){return "R\u00a0"+(Math.abs(n)||0).toLocaleString("en-ZA",{minimumFractionDigits:0,maximumFractionDigits:0});}
+function moneyD(n){return "R\u00a0"+(Math.abs(n)||0).toLocaleString("en-ZA",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function num(n,dp){return (parseFloat(n)||0).toLocaleString("en-ZA",{minimumFractionDigits:dp||0,maximumFractionDigits:dp||0});}
+function fmtSigned(n){return (n<0?"\u2013":"")+money(n);}
+function today(){return new Date().toISOString().substring(0,10);}
+function inMonth(d){return !state.month||(d||"").substring(0,7)===state.month;}
+function truckReg(id){var t=TRUCKS.filter(function(x){return x.id==id;})[0];return t?t.reg:"";}
+function daysUntil(ds){if(!ds)return null;return Math.round((new Date(ds)-new Date())/86400000);}
+function timeDiff(dep,arr){if(!dep||!arr)return 0;var dp=dep.split(":"),ap=arr.split(":");var dm=parseInt(dp[0])*60+parseInt(dp[1]),am=parseInt(ap[0])*60+parseInt(ap[1]);if(am<dm)am+=1440;return(am-dm)/60;}
+function el(id){return document.getElementById(id);}
+function setText(id,val){var e=el(id);if(e)e.textContent=val;}
+function setVal(id,val){var e=el(id);if(e)e.value=val;}
+function getVal(id){var e=el(id);return e?e.value:"";}
+function getNum(id){return parseFloat(getVal(id))||0;}
+function tbadge(id){return '<span class="tbadge">'+id+'</span>';}
+function delBtn(fn,id){return '<button class="btn-del" onclick="'+fn+'('+id+')">&#10005;</button>';}
+function emptyRow(cols){return '<tr class="empty-msg"><td colspan="'+cols+'">No entries yet.</td></tr>';}
+function showMsg(id,msg,ok){var e=el(id);if(!e)return;e.style.color=ok?"var(--gdk)":"var(--red)";e.textContent=msg;setTimeout(function(){e.textContent="";},3000);}
+
+// ── FLEET ─────────────────────────────────────────────────────────
+function getTruckIncome(tid){return (state.incomeRows[tid]||[]).reduce(function(s,r){var e=el("inc_amt_"+r.id);return s+(e?parseFloat(e.value)||0:0);},0);}
+function getTruckExpenses(tid){return (state.expenseRows[tid]||[]).reduce(function(s,r){var e=el("exp_amt_"+r.id);return s+(e?parseFloat(e.value)||0:0);},0);}
+function getExpByCat(tid,cat){return (state.expenseRows[tid]||[]).reduce(function(s,r){var c=getVal("exp_cat_"+r.id)||r.cat;var e=el("exp_amt_"+r.id);return s+(c===cat?(e?parseFloat(e.value)||0:0):0);},0);}
+
+function addIncomeRow(tid){
+  var id=uid();state.incomeRows[tid].push({id:id});
+  var tbody=el("incBody_"+tid);if(!tbody)return;
+  var tr=document.createElement("tr");tr.id="incRow_"+id;
+  tr.innerHTML='<td><input class="inline-input" id="inc_cust_'+id+'" placeholder="Customer name" oninput="recalcTruck('+tid+')"/></td>'
+    +'<td class="rt"><input class="inline-input" style="text-align:right" id="inc_amt_'+id+'" type="number" placeholder="0" min="0" step="100" oninput="recalcTruck('+tid+')"/></td>'
+    +'<td>'+delBtn("delInc_"+tid,id)+'</td>';
+  tbody.appendChild(tr);
+  window["delInc_"+tid]=function(iid){state.incomeRows[tid]=state.incomeRows[tid].filter(function(r){return r.id!==iid;});var row=el("incRow_"+iid);if(row)row.remove();recalcTruck(tid);};
+  recalcTruck(tid);
+}
+
+function addExpenseRow(tid){
+  var id=uid();state.expenseRows[tid].push({id:id,cat:"Fuel"});
+  var tbody=el("expBody_"+tid);if(!tbody)return;
+  var opts=EXP_CATS.map(function(c){return '<option value="'+c+'">'+c+'</option>';}).join("");
+  var tr=document.createElement("tr");tr.id="expRow_"+id;
+  tr.innerHTML='<td><select class="inline-select" id="exp_cat_'+id+'" onchange="recalcTruck('+tid+')">'+opts+'</select></td>'
+    +'<td><input class="inline-input" id="exp_desc_'+id+'" placeholder="Description" oninput="recalcTruck('+tid+')"/></td>'
+    +'<td class="rt"><input class="inline-input" style="text-align:right" id="exp_amt_'+id+'" type="number" placeholder="0" min="0" step="100" oninput="recalcTruck('+tid+')"/></td>'
+    +'<td>'+delBtn("delExp_"+tid,id)+'</td>';
+  tbody.appendChild(tr);
+  window["delExp_"+tid]=function(eid){state.expenseRows[tid]=state.expenseRows[tid].filter(function(r){return r.id!==eid;});var row=el("expRow_"+eid);if(row)row.remove();recalcTruck(tid);};
+  recalcTruck(tid);
+}
+
+function recalcTruck(tid){
+  var inc=getTruckIncome(tid),exp=getTruckExpenses(tid),net=inc-exp;
+  setText("kInc_"+tid,money(inc));setText("kExp_"+tid,money(exp));
+  setText("incTotal_"+tid,money(inc));setText("expTotal_"+tid,money(exp));
+  var kn=el("kNet_"+tid);if(kn){kn.textContent=fmtSigned(net);kn.style.color=net>=0?"var(--gdk)":"var(--red)";}
+  var pb=el("pbNet_"+tid);if(pb){pb.textContent=fmtSigned(net);pb.style.color=net>=0?"var(--gdk)":"var(--red)";}
+  renderFleetSummary();renderExecDash();
+}
+
+function toggleTruck(tid){
+  var body=el("twBody_"+tid),chev=el("twChev_"+tid);if(!body)return;
+  var open=body.style.display==="block";body.style.display=open?"none":"block";
+  if(chev)chev.style.transform=open?"":"rotate(180deg)";
+}
+
+function buildTruckWorkings(){
+  var container=el("truckWorkings");if(!container)return;
+  container.innerHTML="";
+  TRUCKS.forEach(function(t){
+    var div=document.createElement("div");div.className="card";div.style.marginBottom="10px";
+    div.innerHTML='<div style="display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;" onclick="toggleTruck('+t.id+')">'
+      +'<span class="tbadge">'+t.id+'</span>'
+      +'<span class="reg" style="background:var(--bg);border:1.5px solid var(--bdk);border-radius:3px;padding:3px 8px;">'+t.reg+'</span>'
+      +'<div style="margin-left:auto;display:flex;gap:20px;">'
+        +'<div style="text-align:right"><div style="font-size:9px;color:var(--mlt);letter-spacing:1px;text-transform:uppercase;">Income</div><div style="font-family:var(--fh);font-weight:700;font-size:14px;color:var(--gdk);" id="kInc_'+t.id+'">R 0</div></div>'
+        +'<div style="text-align:right"><div style="font-size:9px;color:var(--mlt);letter-spacing:1px;text-transform:uppercase;">Expenses</div><div style="font-family:var(--fh);font-weight:700;font-size:14px;color:var(--red);" id="kExp_'+t.id+'">R 0</div></div>'
+        +'<div style="text-align:right"><div style="font-size:9px;color:var(--mlt);letter-spacing:1px;text-transform:uppercase;">Net P/L</div><div style="font-family:var(--fh);font-weight:700;font-size:14px;" id="kNet_'+t.id+'">R 0</div></div>'
+      +'</div>'
+      +'<span style="font-size:16px;color:var(--muted);margin-left:10px;" id="twChev_'+t.id+'">&#8964;</span>'
+    +'</div>'
+    +'<div id="twBody_'+t.id+'" style="display:none;border-top:1px solid var(--border);margin-top:12px;padding-top:12px;">'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">'
+        +'<div style="padding:0 16px 0 0;border-right:1px solid var(--border);">'
+          +'<div style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gdk);margin-bottom:10px;">+ Income by Customer</div>'
+          +'<table class="gt" style="margin-bottom:8px;"><thead><tr><th>Customer</th><th class="rt">Amount (R)</th><th></th></tr></thead>'
+          +'<tbody id="incBody_'+t.id+'"></tbody>'
+          +'<tfoot><tr><td style="color:var(--gdk);font-weight:700;">Total Income</td><td class="rt" style="color:var(--gdk);" id="incTotal_'+t.id+'">R 0</td><td></td></tr></tfoot></table>'
+          +'<button onclick="addIncomeRow('+t.id+')" style="background:transparent;border:1.5px dashed var(--bdk);color:var(--muted);font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:4px;cursor:pointer;">+ Add Customer</button>'
+        +'</div>'
+        +'<div style="padding:0 0 0 16px;">'
+          +'<div style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:10px;">\u2212 Expenses by Item</div>'
+          +'<table class="gt" style="margin-bottom:8px;"><thead><tr><th>Category</th><th>Description</th><th class="rt">Amount (R)</th><th></th></tr></thead>'
+          +'<tbody id="expBody_'+t.id+'"></tbody>'
+          +'<tfoot><tr><td colspan="2" style="color:var(--red);font-weight:700;">Total Expenses</td><td class="rt" style="color:var(--red);" id="expTotal_'+t.id+'">R 0</td><td></td></tr></tfoot></table>'
+          +'<button onclick="addExpenseRow('+t.id+')" style="background:transparent;border:1.5px dashed var(--bdk);color:var(--muted);font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:4px;cursor:pointer;">+ Add Expense</button>'
+        +'</div>'
+      +'</div>'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;background:var(--bg);border-radius:4px;padding:10px 14px;">'
+        +'<span style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Net P/L — Truck '+t.id+'</span>'
+        +'<span style="font-family:var(--fh);font-size:20px;font-weight:900;" id="pbNet_'+t.id+'">R 0</span>'
+      +'</div>'
+    +'</div>';
+    container.appendChild(div);
+  });
+}
+
+// ── FUEL ──────────────────────────────────────────────────────────
+function fuelAdd(){
+  var date=getVal("ffDate"),tid=parseInt(getVal("ffTruck"))||0,litres=getNum("ffLitres"),cost=getNum("ffCost");
+  if(!date||!tid||!litres||!cost){showMsg("fuelMsg","Fill Date, Truck, Litres & Cost.",false);return;}
+  state.fuelEntries.push({id:uid(),date:date,truckId:tid,litres:litres,cost:cost,km:getNum("ffKm"),notes:getVal("ffNotes").trim()});
+  state.fuelEntries.sort(function(a,b){return b.date.localeCompare(a.date);});
+  setVal("ffLitres","");setVal("ffCost","");setVal("ffKm","");setVal("ffNotes","");
+  showMsg("fuelMsg","Added \u2713",true);renderAll();
+}
+function fuelDel(id){state.fuelEntries=state.fuelEntries.filter(function(e){return e.id!==id;});renderAll();}
+
+function fuelRender(){
+  var ft=parseInt(getVal("fuelFilter"))||0;
+  var rows=state.fuelEntries.filter(function(e){return inMonth(e.date)&&(!ft||e.truckId===ft);});
+  var tbody=el("fuelBody");if(!tbody)return;
+  tbody.innerHTML="";
+  var totL=0,totC=0,totKm=0;
+  if(!rows.length){tbody.innerHTML=emptyRow(10);}
+  else rows.forEach(function(e){
+    totL+=e.litres;totC+=e.cost;totKm+=e.km;
+    var rate=e.litres>0?e.cost/e.litres:0,eff=e.km>0&&e.litres>0?e.km/e.litres:0;
+    var ec=eff>=3.5?"var(--gdk)":eff>=2.8?"var(--amber)":"var(--red)";
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td>'+e.date+'</td><td>'+tbadge(e.truckId)+'</td><td><span class="reg">'+truckReg(e.truckId)+'</span></td>'
+      +'<td class="rt">'+num(e.litres,1)+'L</td><td class="rt">'+moneyD(e.cost)+'</td>'
+      +'<td class="rt">'+(rate>0?moneyD(rate):"—")+'</td>'
+      +'<td class="rt">'+(e.km>0?num(e.km,0)+" km":"—")+'</td>'
+      +'<td class="rt" style="font-weight:700;color:'+(eff>0?ec:"inherit")+'">'+(eff>0?num(eff,2)+" km/L":"—")+'</td>'
+      +'<td>'+(e.notes||"")+'</td><td class="ct">'+delBtn("fuelDel",e.id)+'</td>';
+    tbody.appendChild(tr);
+  });
+  var ar=totL>0?totC/totL:0,ae=totL>0&&totKm>0?totKm/totL:0;
+  setText("fftL",num(totL,1)+" L");setText("fftC",moneyD(totC));setText("fftR",ar>0?moneyD(ar):"—");
+  setText("fftKm",totKm>0?num(totKm,0)+" km":"—");setText("fftE",ae>0?num(ae,2)+" km/L":"—");
+  var me=state.fuelEntries.filter(function(e){return inMonth(e.date);}),ml=0,mc=0,mk=0;
+  me.forEach(function(e){ml+=e.litres;mc+=e.cost;mk+=e.km;});
+  var mr=ml>0?mc/ml:0,meff=ml>0&&mk>0?mk/ml:0;
+  setText("fkL",num(ml,1)+" L");setText("fkC",money(mc));setText("fkR",mr>0?moneyD(mr):"—");
+  setText("fkKm",num(mk,0)+" km");setText("fkEff",meff>0?num(meff,2)+" km/L":"—");
+}
+
+// ── ODO ───────────────────────────────────────────────────────────
+function odoAdd(){
+  var date=getVal("ofDate"),tid=parseInt(getVal("ofTruck"))||0,start=getNum("ofStart"),end=getNum("ofEnd");
+  if(!date||!tid||!start||!end){showMsg("odoMsg","Fill all fields.",false);return;}
+  if(end<=start){showMsg("odoMsg","End must be > Start.",false);return;}
+  state.odoEntries.push({id:uid(),date:date,truckId:tid,driver:getVal("ofDriver"),start:start,end:end});
+  state.odoEntries.sort(function(a,b){return b.date.localeCompare(a.date);});
+  setVal("ofStart","");setVal("ofEnd","");showMsg("odoMsg","Added \u2713",true);renderAll();
+}
+function odoDel(id){state.odoEntries=state.odoEntries.filter(function(e){return e.id!==id;});renderAll();}
+
+function odoRender(){
+  var rows=state.odoEntries.filter(function(e){return inMonth(e.date);});
+  var tbody=el("odoBody");if(!tbody)return;tbody.innerHTML="";var totD=0;
+  if(!rows.length){tbody.innerHTML=emptyRow(8);}
+  else rows.forEach(function(e){
+    var dist=e.end-e.start;totD+=dist;
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td>'+e.date+'</td><td>'+tbadge(e.truckId)+'</td><td><span class="reg">'+truckReg(e.truckId)+'</span></td>'
+      +'<td>'+(e.driver||"—")+'</td><td class="rt">'+num(e.start,0)+' km</td><td class="rt">'+num(e.end,0)+' km</td>'
+      +'<td class="rt" style="font-weight:700;color:var(--gdk)">'+num(dist,0)+' km</td>'
+      +'<td class="ct">'+delBtn("odoDel",e.id)+'</td>';
+    tbody.appendChild(tr);
+  });
+  setText("oftD",totD>0?num(totD,0)+" km":"—");setText("okTotal",num(totD,0)+" km");
+  setText("okAvg",rows.length>0?num(totD/rows.length,0)+" km":"0 km");setText("okCount",rows.length);
+  var tkm={};rows.forEach(function(e){tkm[e.truckId]=(tkm[e.truckId]||0)+(e.end-e.start);});
+  var best=0,bestId=0;Object.keys(tkm).forEach(function(k){if(tkm[k]>best){best=tkm[k];bestId=k;}});
+  setText("okBest",bestId>0?"Truck "+bestId:"—");
+}
+
+// ── DRIVERS ───────────────────────────────────────────────────────
+function driverAdd(){
+  var date=getVal("drfDate"),name=getVal("drfName").trim();
+  if(!date||!name){showMsg("driverMsg","Date and Name required.",false);return;}
+  state.driverEntries.push({id:uid(),date:date,name:name,lic:getVal("drfLic").trim(),truckId:parseInt(getVal("drfTruck"))||0,hours:getNum("drfHours"),status:getVal("drfStatus"),incidents:getNum("drfInc"),ontime:getNum("drfOntime"),deliveries:getNum("drfDel"),notes:getVal("drfNotes").trim()});
+  state.driverEntries.sort(function(a,b){return b.date.localeCompare(a.date);});
+  setVal("drfName","");setVal("drfLic","");setVal("drfHours","");setVal("drfInc","");setVal("drfOntime","");setVal("drfDel","");setVal("drfNotes","");
+  showMsg("driverMsg","Added \u2713",true);populateSelects();renderAll();
+}
+function driverDel(id){state.driverEntries=state.driverEntries.filter(function(e){return e.id!==id;});populateSelects();renderAll();}
+
+function calcRating(name){
+  var me=state.driverEntries.filter(function(e){return e.name===name&&inMonth(e.date);});
+  if(!me.length)return{rating:0,km:0,hours:0,incidents:0,ontime:0,deliveries:0,eff:0};
+  var totH=0,totInc=0,totOT=0,totDel=0,tids={};
+  me.forEach(function(e){totH+=e.hours;totInc+=e.incidents;totOT+=e.ontime;totDel+=e.deliveries;if(e.truckId)tids[e.truckId]=1;});
+  var totKm=0;state.odoEntries.filter(function(e){return e.driver===name&&inMonth(e.date);}).forEach(function(e){totKm+=e.end-e.start;});
+  var totL=0,totFKm=0;state.fuelEntries.filter(function(e){return inMonth(e.date)&&tids[e.truckId];}).forEach(function(e){totL+=e.litres;totFKm+=e.km;});
+  var eff=totL>0&&totFKm>0?totFKm/totL:0;
+  var r=0,f=0;
+  if(totInc===0){r+=5;f++;}else if(totInc===1){r+=3;f++;}else{r+=1;f++;}
+  if(totDel>0){var op=totOT/totDel;r+=(op>=0.95?5:op>=0.85?4:op>=0.7?3:2);f++;}
+  if(eff>0){r+=(eff>=3.5?5:eff>=3?4:eff>=2.5?3:2);f++;}
+  if(totH>0){r+=4;f++;}
+  return{rating:Math.min(5,f>0?Math.round(r/f):0),km:totKm,hours:totH,incidents:totInc,ontime:totOT,deliveries:totDel,eff:eff};
+}
+
+function renderDrivers(){
+  var names={};state.driverEntries.filter(function(e){return inMonth(e.date);}).forEach(function(e){if(e.name)names[e.name]=1;});
+  var grid=el("scorecardGrid");
+  if(grid){
+    grid.innerHTML="";
+    var nl=Object.keys(names);
+    if(!nl.length){grid.innerHTML='<div style="font-size:12px;color:var(--mlt);font-style:italic;padding:8px 0">No driver entries this month.</div>';}
+    else nl.forEach(function(name){
+      var sc=calcRating(name);
+      var stars=Array.from({length:5},function(_,i){return '<span class="star'+(i<sc.rating?" filled":"")+'">&#9733;</span>';}).join("");
+      var lt=state.driverEntries.filter(function(e){return e.name===name&&e.truckId;}).slice(-1)[0];
+      var card=document.createElement("div");card.className="sc-card";
+      card.innerHTML='<div class="sc-head"><div class="sc-name">'+name+'</div><div class="rating-wrap">'+stars+'</div></div>'
+        +(lt?'<div style="font-family:monospace;font-size:10px;color:var(--muted);margin-bottom:8px;">Truck '+lt.truckId+' \u2014 '+truckReg(lt.truckId)+'</div>':'')
+        +'<div class="sc-stats">'
+          +'<div class="sc-stat"><div class="scl">km Driven</div><div class="scv">'+num(sc.km,0)+'</div></div>'
+          +'<div class="sc-stat"><div class="scl">Hours</div><div class="scv">'+num(sc.hours,1)+'</div></div>'
+          +'<div class="sc-stat"><div class="scl">Incidents</div><div class="scv" style="color:'+(sc.incidents===0?"var(--gdk)":sc.incidents===1?"var(--amber)":"var(--red)")+'">'+sc.incidents+'</div></div>'
+          +'<div class="sc-stat"><div class="scl">On-Time</div><div class="scv">'+(sc.deliveries>0?num(sc.ontime/sc.deliveries*100,0)+"%":"—")+'</div></div>'
+          +'<div class="sc-stat"><div class="scl">Deliveries</div><div class="scv">'+sc.deliveries+'</div></div>'
+          +'<div class="sc-stat"><div class="scl">Fuel Eff.</div><div class="scv" style="color:'+(sc.eff>=3.5?"var(--gdk)":sc.eff>=2.8?"var(--amber)":sc.eff>0?"var(--red)":"inherit")+'">'+(sc.eff>0?num(sc.eff,2)+" km/L":"—")+'</div></div>'
+        +'</div>';
+      grid.appendChild(card);
+    });
+  }
+  var rows=state.driverEntries.filter(function(e){return inMonth(e.date);});
+  var tbody=el("driverBody");if(!tbody)return;tbody.innerHTML="";
+  var totH=0,totI=0;
+  if(!rows.length){tbody.innerHTML=emptyRow(11);}
+  else rows.forEach(function(e){
+    totH+=e.hours;totI+=e.incidents;
+    var sc=e.status==="Active"?"sb-active":e.status==="Sick"?"sb-sick":"sb-off";
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td>'+e.date+'</td><td style="font-weight:600">'+e.name+'</td>'
+      +'<td style="font-family:monospace;font-size:10px">'+(e.lic||"—")+'</td>'
+      +'<td>'+(e.truckId?tbadge(e.truckId):"—")+'</td>'
+      +'<td>'+(e.truckId?'<span class="reg">'+truckReg(e.truckId)+'</span>':"—")+'</td>'
+      +'<td class="rt">'+num(e.hours,1)+'h</td>'
+      +'<td class="rt" style="color:'+(e.incidents>0?"var(--red)":"var(--gdk)")+'">'+e.incidents+'</td>'
+      +'<td class="rt">'+(e.deliveries>0?num(e.ontime/e.deliveries*100,0)+"%":"—")+'</td>'
+      +'<td class="rt">'+e.deliveries+'</td>'
+      +'<td class="ct"><span class="status-badge '+sc+'">'+e.status+'</span></td>'
+      +'<td class="ct">'+delBtn("driverDel",e.id)+'</td>';
+    tbody.appendChild(tr);
+  });
+  setText("drftH",num(totH,1)+"h");setText("drftI",totI);
+}
+
+// ── MAINTENANCE ───────────────────────────────────────────────────
+function maintAdd(){
+  var date=getVal("mfDate"),tid=parseInt(getVal("mfTruck"))||0;
+  if(!date||!tid){showMsg("maintMsg","Date and Truck required.",false);return;}
+  state.maintEntries.push({id:uid(),date:date,truckId:tid,type:getVal("mfType"),shop:getVal("mfShop").trim(),cost:getNum("mfCost"),next:getNum("mfNext"),notes:getVal("mfNotes").trim()});
+  state.maintEntries.sort(function(a,b){return b.date.localeCompare(a.date);});
+  setVal("mfShop","");setVal("mfCost","");setVal("mfNext","");setVal("mfNotes","");
+  showMsg("maintMsg","Added \u2713",true);renderAll();
+}
+function maintDel(id){state.maintEntries=state.maintEntries.filter(function(e){return e.id!==id;});renderAll();}
+
+function maintRender(){
+  var rows=state.maintEntries.filter(function(e){return inMonth(e.date);});
+  var tbody=el("maintBody");if(!tbody)return;tbody.innerHTML="";
+  var totC=0,due=0,over=0;
+  if(!rows.length){tbody.innerHTML=emptyRow(9);}
+  else rows.forEach(function(e){
+    totC+=e.cost;
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td>'+e.date+'</td><td>'+tbadge(e.truckId)+'</td><td><span class="reg">'+truckReg(e.truckId)+'</span></td>'
+      +'<td>'+e.type+'</td><td>'+(e.shop||"—")+'</td><td class="rt">'+money(e.cost)+'</td>'
+      +'<td class="rt">'+(e.next>0?num(e.next,0)+' km':"—")+'</td>'
+      +'<td>'+(e.notes||"")+'</td><td class="ct">'+delBtn("maintDel",e.id)+'</td>';
+    tbody.appendChild(tr);
+  });
+  TRUCKS.forEach(function(t){
+    var lo=0;state.odoEntries.filter(function(e){return e.truckId===t.id;}).forEach(function(e){if(e.end>lo)lo=e.end;});
+    state.maintEntries.filter(function(e){return e.truckId===t.id&&e.next>0;}).forEach(function(e){var g=e.next-lo;if(g<0)over++;else if(g<=5000)due++;});
+  });
+  setText("mftC",money(totC));setText("mkCost",money(totC));setText("mkCount",rows.length);setText("mkDue",due);setText("mkOver",over);
+}
+
+// ── TYRES ─────────────────────────────────────────────────────────
+function tyreAdd(){
+  var date=getVal("tfDate"),tid=parseInt(getVal("tfTruck"))||0;
+  if(!date||!tid){showMsg("tyreMsg","Date and Truck required.",false);return;}
+  state.tyreEntries.push({id:uid(),date:date,truckId:tid,pos:getVal("tfPos"),brand:getVal("tfBrand").trim(),action:getVal("tfAction"),cost:getNum("tfCost"),tread:getNum("tfTread"),notes:getVal("tfNotes").trim()});
+  state.tyreEntries.sort(function(a,b){return b.date.localeCompare(a.date);});
+  setVal("tfBrand","");setVal("tfCost","");setVal("tfTread","");setVal("tfNotes","");
+  showMsg("tyreMsg","Added \u2713",true);renderAll();
+}
+function tyreDel(id){state.tyreEntries=state.tyreEntries.filter(function(e){return e.id!==id;});renderAll();}
+
+function tyreRender(){
+  var rows=state.tyreEntries.filter(function(e){return inMonth(e.date);});
+  var tbody=el("tyreBody");if(!tbody)return;tbody.innerHTML="";
+  var totC=0,newT=0,rep=0;
+  if(!rows.length){tbody.innerHTML=emptyRow(10);}
+  else rows.forEach(function(e){
+    totC+=e.cost;if(e.action==="New Tyre")newT++;if(e.action==="Repair")rep++;
+    var tc=e.tread>0?(e.tread>=4?"var(--gdk)":e.tread>=2?"var(--amber)":"var(--red)"):"inherit";
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td>'+e.date+'</td><td>'+tbadge(e.truckId)+'</td><td><span class="reg">'+truckReg(e.truckId)+'</span></td>'
+      +'<td>'+e.pos+'</td><td>'+(e.brand||"—")+'</td><td>'+e.action+'</td>'
+      +'<td class="rt" style="font-weight:700;color:'+tc+'">'+(e.tread>0?num(e.tread,1)+'mm':"—")+'</td>'
+      +'<td class="rt">'+money(e.cost)+'</td><td>'+(e.notes||"")+'</td>'
+      +'<td class="ct">'+delBtn("tyreDel",e.id)+'</td>';
+    tbody.appendChild(tr);
+  });
+  setText("tftC",money(totC));setText("tkCost",money(totC));setText("tkNew",newT);setText("tkRep",rep);setText("tkCount",state.tyreEntries.length);
+}
+
+// ── TRIPS ─────────────────────────────────────────────────────────
+function tripAdd(){
+  var date=getVal("trfDate"),tid=parseInt(getVal("trfTruck"))||0;
+  if(!date||!tid){showMsg("tripMsg","Date and Truck required.",false);return;}
+  var dep=getVal("trfDep"),arr=getVal("trfArr");
+  state.tripEntries.push({id:uid(),date:date,truckId:tid,driver:getVal("trfDriver"),dist:getNum("trfDist"),origin:getVal("trfOrigin").trim(),dest:getVal("trfDest").trim(),dep:dep,arr:arr,load:getVal("trfLoad").trim(),hrs:timeDiff(dep,arr)});
+  state.tripEntries.sort(function(a,b){return b.date.localeCompare(a.date);});
+  setVal("trfDist","");setVal("trfOrigin","");setVal("trfDest","");setVal("trfDep","");setVal("trfArr","");setVal("trfLoad","");
+  showMsg("tripMsg","Added \u2713",true);renderAll();
+}
+function tripDel(id){state.tripEntries=state.tripEntries.filter(function(e){return e.id!==id;});renderAll();}
+
+function tripRender(){
+  var rows=state.tripEntries.filter(function(e){return inMonth(e.date);});
+  var tbody=el("tripBody");if(!tbody)return;tbody.innerHTML="";
+  var totD=0,totH=0,at={};
+  if(!rows.length){tbody.innerHTML=emptyRow(11);}
+  else rows.forEach(function(e){
+    totD+=e.dist;totH+=e.hrs;at[e.truckId]=1;
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td>'+e.date+'</td><td>'+tbadge(e.truckId)+'</td><td><span class="reg">'+truckReg(e.truckId)+'</span></td>'
+      +'<td>'+(e.driver||"—")+'</td><td>'+(e.origin||"—")+'</td><td>'+(e.dest||"—")+'</td>'
+      +'<td class="rt" style="font-weight:700">'+(e.dist>0?num(e.dist,0)+' km':"—")+'</td>'
+      +'<td>'+(e.dep||"—")+'</td><td>'+(e.arr||"—")+'</td>'
+      +'<td style="font-size:10px">'+(e.load||"—")+'</td>'
+      +'<td class="ct">'+delBtn("tripDel",e.id)+'</td>';
+    tbody.appendChild(tr);
+  });
+  setText("trftD",totD>0?num(totD,0)+" km":"—");setText("trpCount",rows.length);setText("trpKm",num(totD,0)+" km");
+  setText("trpAvg",rows.length>0?num(totD/rows.length,0)+" km":"0 km");setText("trpHrs",num(totH,1));setText("trpTrucks",Object.keys(at).length);
+}
+
+// ── PIPELINE ──────────────────────────────────────────────────────
+function dealAdd(){
+  var company=getVal("pfCompany").trim();
+  if(!company){showMsg("dealMsg","Company name required.",false);return;}
+  var stage=getVal("pfStage"),prob=getNum("pfProb")||STAGE_PROBS[stage]||10;
+  state.deals.push({id:uid(),company:company,contact:getVal("pfContact").trim(),phone:getVal("pfPhone").trim(),rep:getVal("pfRep").trim(),stream:getVal("pfStream"),stage:stage,value:getNum("pfValue"),prob:prob,priority:getVal("pfPriority"),dateAdded:getVal("pfDate")||today(),closeDate:getVal("pfClose"),followup:getVal("pfFollowup"),notes:getVal("pfNotes").trim()});
+  state.deals.sort(function(a,b){return b.value-a.value;});
+  setVal("pfCompany","");setVal("pfContact","");setVal("pfPhone","");setVal("pfValue","");setVal("pfClose","");setVal("pfFollowup","");setVal("pfNotes","");
+  showMsg("dealMsg","Deal added \u2713",true);renderAll();
+}
+function dealDel(id){state.deals=state.deals.filter(function(d){return d.id!==id;});renderAll();}
+function dealStageChange(id,newStage){var d=state.deals.filter(function(x){return x.id===id;})[0];if(!d)return;d.stage=newStage;d.prob=STAGE_PROBS[newStage]||0;renderAll();}
+
+function pipelineRender(){
+  var sf=getVal("filterStage"),stf=getVal("filterStream");
+  var rows=state.deals.filter(function(d){return(!sf||d.stage===sf)&&(!stf||d.stream===stf);});
+  var tbody=el("pipelineBody");if(!tbody)return;tbody.innerHTML="";
+  var totVal=0,totWtd=0;
+  if(!rows.length){tbody.innerHTML=emptyRow(13);}
+  else rows.forEach(function(d){
+    var wtd=Math.round(d.value*(d.prob/100));totVal+=d.value;totWtd+=wtd;
+    var fu=daysUntil(d.followup);
+    var fuStr=d.followup?(fu<0?'<span style="color:var(--red);font-weight:700">'+d.followup+' \u26a0</span>':fu===0?'<span style="color:var(--amber);font-weight:700">Today</span>':d.followup):"—";
+    var stageOpts=STAGES.map(function(s){return'<option value="'+s+'"'+(d.stage===s?" selected":"")+'>'+s+'</option>';}).join("");
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td style="font-weight:600">'+d.company+'</td>'
+      +'<td><div style="font-size:11px">'+(d.contact||"—")+'</div><div style="font-size:10px;color:var(--mlt)">'+(d.phone||"")+'</div></td>'
+      +'<td>'+(d.rep||"—")+'</td>'
+      +'<td><span class="stbadge st-'+d.stream.toLowerCase()+'">'+STREAMS[d.stream]+'</span></td>'
+      +'<td class="ct"><select style="font-family:var(--fh);font-size:9px;font-weight:700;border:none;background:transparent;cursor:pointer" onchange="dealStageChange('+d.id+',this.value)">'+stageOpts+'</select></td>'
+      +'<td class="rt" style="font-weight:700">'+money(d.value)+'</td>'
+      +'<td class="rt">'+d.prob+'%</td>'
+      +'<td class="rt" style="color:var(--gdk);font-weight:700">'+money(wtd)+'</td>'
+      +'<td class="ct"><span class="pdot '+(d.priority==="High"?"pd-high":d.priority==="Medium"?"pd-med":"pd-low")+'"></span>'+d.priority+'</td>'
+      +'<td>'+(d.closeDate||"—")+'</td><td>'+fuStr+'</td>'
+      +'<td style="font-size:10px">'+(d.notes||"")+'</td>'
+      +'<td class="ct">'+delBtn("dealDel",d.id)+'</td>';
+    tbody.appendChild(tr);
+  });
+  setText("pftVal",totVal>0?money(totVal):"—");setText("pftWtd",totWtd>0?money(totWtd):"—");
+  var active=state.deals.filter(function(d){return d.stage!=="Lost"&&d.stage!=="Won";});
+  var wonD=state.deals.filter(function(d){return d.stage==="Won"&&inMonth(d.dateAdded);});
+  var closedD=state.deals.filter(function(d){return(d.stage==="Won"||d.stage==="Lost")&&inMonth(d.dateAdded);});
+  var pipeV=0,wtdV=0,wonV=0;
+  active.forEach(function(d){pipeV+=d.value;wtdV+=Math.round(d.value*(d.prob/100));});
+  wonD.forEach(function(d){wonV+=d.value;});
+  var wr=closedD.length>0?Math.round(wonD.length/closedD.length*100):0;
+  setText("bdkPipe",money(pipeV));setText("bdkFcast",money(wtdV));setText("bdkDeals",active.length);
+  setText("bdkWon",money(wonV));setText("bdkWinRate",wr+"%");setText("bdkAvg",active.length>0?money(Math.round(pipeV/active.length)):"R 0");
+  var fw=el("bdFunnel");
+  if(fw){
+    var fsMap={Lead:"fs-lead",Qualified:"fs-qual",Quoted:"fs-quote",Negotiation:"fs-neg",Won:"fs-won",Lost:"fs-lost"};
+    fw.innerHTML=STAGES.map(function(s){
+      var sd=state.deals.filter(function(d){return d.stage===s;}),sv=0;
+      sd.forEach(function(d){sv+=d.value;});
+      var pct=state.deals.length>0?Math.round(sd.length/state.deals.length*100):0;
+      return'<div class="fstage '+(fsMap[s]||"fs-lead")+'"><div class="fsl">'+s+'</div><div class="fsc">'+sd.length+'</div><div class="fsv">'+money(sv)+'</div><div class="fsp">'+pct+'%</div></div>';
+    }).join("");
+  }
+  var sc=el("bdStreams");
+  if(sc){
+    sc.innerHTML=Object.keys(STREAMS).map(function(s){
+      var sd=active.filter(function(d){return d.stream===s;});
+      var won=state.deals.filter(function(d){return d.stream===s&&d.stage==="Won";});
+      var lost=state.deals.filter(function(d){return d.stream===s&&d.stage==="Lost";});
+      var totV=0,wonV2=0;sd.forEach(function(d){totV+=d.value;});won.forEach(function(d){wonV2+=d.value;});
+      var wr2=won.length+lost.length>0?Math.round(won.length/(won.length+lost.length)*100):0;
+      var cls=s==="Trucks"?"sc-truck":s==="Forklift"?"sc-fork":"sc-vas";
+      return'<div class="stream-card '+cls+'"><h4>'+STREAMS[s]+'</h4>'
+        +'<div class="scs">'
+          +'<div class="sc-stat"><div class="scl">Pipeline</div><div class="scv">'+money(totV)+'</div></div>'
+          +'<div class="sc-stat"><div class="scl">Deals</div><div class="scv">'+sd.length+'</div></div>'
+          +'<div class="sc-stat"><div class="scl">Won</div><div class="scv" style="color:var(--gdk)">'+money(wonV2)+'</div></div>'
+          +'<div class="sc-stat"><div class="scl">Win Rate</div><div class="scv">'+wr2+'%</div></div>'
+        +'</div></div>';
+    }).join("");
+  }
+}
+
+// ── FLEET SUMMARY ─────────────────────────────────────────────────
+function renderFleetSummary(){
+  var tbody=el("fleetSumBody");if(!tbody)return;tbody.innerHTML="";
+  var tot={rev:0,fuel:0,drv:0,mnt:0,tyr:0,tol:0,ins:0,oth:0,cst:0,net:0};
+  TRUCKS.forEach(function(t){
+    var rev=getTruckIncome(t.id),exp=getTruckExpenses(t.id),net=rev-exp;
+    var c={fuel:getExpByCat(t.id,"Fuel"),drv:getExpByCat(t.id,"Driver Pay"),mnt:getExpByCat(t.id,"Maintenance"),tyr:getExpByCat(t.id,"Tyres & Parts"),tol:getExpByCat(t.id,"Toll / Levies"),ins:getExpByCat(t.id,"Insurance"),oth:getExpByCat(t.id,"Other")};
+    tot.rev+=rev;tot.fuel+=c.fuel;tot.drv+=c.drv;tot.mnt+=c.mnt;tot.tyr+=c.tyr;tot.tol+=c.tol;tot.ins+=c.ins;tot.oth+=c.oth;tot.cst+=exp;tot.net+=net;
+    var tr=document.createElement("tr");
+    tr.innerHTML='<td>'+tbadge(t.id)+'</td><td><span class="reg">'+t.reg+'</span></td>'
+      +'<td class="rt">'+money(rev)+'</td><td class="rt">'+money(c.fuel)+'</td><td class="rt">'+money(c.drv)+'</td>'
+      +'<td class="rt">'+money(c.mnt)+'</td><td class="rt">'+money(c.tyr)+'</td><td class="rt">'+money(c.tol)+'</td>'
+      +'<td class="rt">'+money(c.ins)+'</td><td class="rt">'+money(c.oth)+'</td><td class="rt">'+money(exp)+'</td>'
+      +'<td class="rt" style="font-weight:700;color:'+(net>=0?"var(--gdk)":"var(--red)")+'">'+fmtSigned(net)+'</td>';
+    tbody.appendChild(tr);
+  });
+  setText("fsRev",money(tot.rev));setText("fsFuel",money(tot.fuel));setText("fsDrv",money(tot.drv));
+  setText("fsMnt",money(tot.mnt));setText("fsTyr",money(tot.tyr));setText("fsTol",money(tot.tol));
+  setText("fsIns",money(tot.ins));setText("fsOth",money(tot.oth));setText("fsCst",money(tot.cst));
+  var fsNet=el("fsNet");if(fsNet){fsNet.textContent=fmtSigned(tot.net);fsNet.style.color=tot.net>=0?"var(--gdk)":"var(--red)";}
+  setText("fltRev",money(tot.rev));setText("fltCost",money(tot.cst));
+  var fltNet=el("fltNet");if(fltNet){fltNet.textContent=fmtSigned(tot.net);fltNet.style.color=tot.net>=0?"var(--gdk)":"var(--red)";}
+  setText("fltMgn",(tot.rev>0?((tot.net/tot.rev)*100).toFixed(1):0)+"%");
+}
+
+// ── EXEC DASHBOARD ────────────────────────────────────────────────
+function renderExecDash(){
+  var totRev=0,totCost=0,totNet=0;
+  TRUCKS.forEach(function(t){var r=getTruckIncome(t.id),c=getTruckExpenses(t.id);totRev+=r;totCost+=c;totNet+=r-c;});
+  var fm=state.fuelEntries.filter(function(e){return inMonth(e.date);}),fc=0;fm.forEach(function(e){fc+=e.cost;});
+  var active=state.deals.filter(function(d){return d.stage!=="Lost"&&d.stage!=="Won";});
+  var wonD=state.deals.filter(function(d){return d.stage==="Won"&&inMonth(d.dateAdded);});
+  var closedD=state.deals.filter(function(d){return(d.stage==="Won"||d.stage==="Lost")&&inMonth(d.dateAdded);});
+  var pipeV=0;active.forEach(function(d){pipeV+=d.value;});
+  var wr=closedD.length>0?Math.round(wonD.length/closedD.length*100):0;
+  setText("ekRev",money(totRev));setText("ekCost",money(totCost));
+  var ekn=el("ekNet");if(ekn){ekn.textContent=fmtSigned(totNet);ekn.style.color=totNet>=0?"var(--gdk)":"var(--red)";}
+  setText("ekFuel",money(fc));setText("ekPipe",money(pipeV));setText("ekWin",wr+"%");
+  var pl=el("execTruckPL");
+  if(pl){
+    var maxAbs=0;TRUCKS.forEach(function(t){var n=Math.abs(getTruckIncome(t.id)-getTruckExpenses(t.id));if(n>maxAbs)maxAbs=n;});
+    pl.innerHTML=TRUCKS.map(function(t){
+      var r=getTruckIncome(t.id),c=getTruckExpenses(t.id),n=r-c;
+      var pct=maxAbs>0?Math.round(Math.abs(n)/maxAbs*100):0;
+      return'<div class="list-item">'
+        +'<span style="font-family:var(--fh);font-weight:900;font-size:11px;min-width:18px">'+t.id+'</span>'
+        +'<span class="reg" style="min-width:95px;font-size:10px">'+t.reg+'</span>'
+        +'<div class="bar-wrap"><div class="bar '+(n>=0?"bar-g":"bar-a")+'" style="width:'+pct+'%"></div></div>'
+        +'<span style="font-family:var(--fh);font-weight:700;font-size:11px;color:'+(n>=0?"var(--gdk)":"var(--red)")+';min-width:70px;text-align:right">'+fmtSigned(n)+'</span>'
+        +'</div>';
+    }).join("");
+  }
+  var alerts=[];
+  TRUCKS.forEach(function(t){
+    var lo=0;state.odoEntries.filter(function(e){return e.truckId===t.id;}).forEach(function(e){if(e.end>lo)lo=e.end;});
+    state.maintEntries.filter(function(e){return e.truckId===t.id&&e.next>0;}).forEach(function(e){var g=e.next-lo;if(g<0)alerts.push({dot:"dot-r",msg:"Truck "+t.id+": "+e.type+" OVERDUE"});else if(g<=5000)alerts.push({dot:"dot-a",msg:"Truck "+t.id+": "+e.type+" due in "+num(g,0)+"km"});});
+  });
+  state.tyreEntries.forEach(function(e){if(e.tread>0&&e.tread<2)alerts.push({dot:"dot-r",msg:"Truck "+e.truckId+" "+e.pos+": tread "+num(e.tread,1)+"mm \u2014 REPLACE"});else if(e.tread>=2&&e.tread<4)alerts.push({dot:"dot-a",msg:"Truck "+e.truckId+" "+e.pos+": tread "+num(e.tread,1)+"mm"});});
+  state.deals.forEach(function(d){if(d.followup){var days=daysUntil(d.followup);if(days!==null&&days<=0&&d.stage!=="Won"&&d.stage!=="Lost")alerts.push({dot:"dot-a",msg:"BD: "+d.company+(days<0?" (overdue)":"")});}});
+  var al=el("execAlerts");
+  if(al)al.innerHTML=alerts.length?alerts.slice(0,7).map(function(a){return'<div class="list-item"><span class="alert-dot '+a.dot+'"></span><span style="font-size:11px">'+a.msg+'</span></div>';}).join(""):'<div style="font-size:11px;color:var(--mlt);font-style:italic;padding:8px 0">No alerts \u2014 all clear.</div>';
+  var fe=el("execFuelEff");
+  if(fe)fe.innerHTML=TRUCKS.map(function(t){
+    var fl=0,fk=0;fm.forEach(function(e){if(e.truckId===t.id){fl+=e.litres;fk+=e.km;}});
+    var eff=fl>0&&fk>0?fk/fl:0;var col=eff>=3.5?"var(--gdk)":eff>=2.8?"var(--amber)":"var(--mlt)";
+    return'<div class="list-item">'
+      +'<span style="font-family:var(--fh);font-weight:900;font-size:11px;min-width:18px">'+t.id+'</span>'
+      +'<span class="reg" style="min-width:95px;font-size:10px">'+t.reg+'</span>'
+      +'<span style="flex:1;font-size:10px;color:var(--muted)">'+num(fl,0)+'L</span>'
+      +'<span style="font-family:var(--fh);font-weight:700;font-size:12px;color:'+col+'">'+(eff>0?num(eff,2)+" km/L":"—")+'</span>'
+      +'</div>';
+  }).join("");
+  var bd=el("execBD");
+  if(bd){
+    var top=active.slice().sort(function(a,b){return b.value-a.value;}).slice(0,4);
+    bd.innerHTML=top.length?top.map(function(d,i){
+      return'<div class="list-item">'
+        +'<span style="font-family:var(--fh);font-weight:900;font-size:11px;color:var(--mlt);min-width:16px">'+(i+1)+'.</span>'
+        +'<span style="flex:1;font-weight:600;font-size:11px">'+d.company+'</span>'
+        +'<span class="sbadge sb-'+(d.stage.toLowerCase()==="negotiation"?"neg":d.stage.toLowerCase())+'" style="margin-right:6px">'+d.stage+'</span>'
+        +'<span style="font-family:var(--fh);font-weight:700;font-size:11px;color:var(--gdk)">'+money(d.value)+'</span>'
+        +'</div>';
+    }).join(""):'<div style="font-size:11px;color:var(--mlt);font-style:italic;padding:8px 0">No active deals.</div>';
+  }
+}
+
+// ── POPULATE SELECTS ──────────────────────────────────────────────
+function populateSelects(){
+  ["ffTruck","ofTruck","drfTruck","mfTruck","tfTruck","trfTruck"].forEach(function(sid){
+    var sel=el(sid);if(!sel)return;var cur=sel.value;
+    sel.innerHTML='<option value="">Select truck\u2026</option>';
+    TRUCKS.forEach(function(t){var o=document.createElement("option");o.value=t.id;o.textContent=t.id+" \u2014 "+t.reg;sel.appendChild(o);});
+    if(cur)sel.value=cur;
+  });
+  var ff=el("fuelFilter");
+  if(ff){var cur=ff.value;ff.innerHTML='<option value="0">All Trucks</option>';TRUCKS.forEach(function(t){var o=document.createElement("option");o.value=t.id;o.textContent=t.id+" \u2014 "+t.reg;ff.appendChild(o);});if(cur)ff.value=cur;}
+  var dn={};state.driverEntries.forEach(function(e){if(e.name)dn[e.name]=1;});
+  ["ofDriver","trfDriver"].forEach(function(sid){
+    var sel=el(sid);if(!sel)return;var cur=sel.value;
+    sel.innerHTML='<option value="">Select driver\u2026</option>';
+    Object.keys(dn).forEach(function(n){var o=document.createElement("option");o.value=n;o.textContent=n;sel.appendChild(o);});
+    if(cur)sel.value=cur;
+  });
+}
+
+// ── RENDER ALL ────────────────────────────────────────────────────
+function renderAll(){renderFleetSummary();fuelRender();odoRender();renderDrivers();maintRender();tyreRender();tripRender();pipelineRender();renderExecDash();}
+
+// ── EXPORT ────────────────────────────────────────────────────────
+function exportCSV(){
+  var period=state.month||"all";
+  var rows=["HRMP LOGISTICS \u2014 OPERATIONS CENTRE","Period: "+period,"","FLEET FINANCE","Truck#,Registration,Revenue,Total Cost,Net P/L"];
+  TRUCKS.forEach(function(t){var r=getTruckIncome(t.id),c=getTruckExpenses(t.id);rows.push([t.id,t.reg,r,c,r-c].join(","));});
+  rows.push("","FUEL LOG","Date,Truck,Litres,Cost,km,Notes");
+  state.fuelEntries.forEach(function(e){rows.push([e.date,e.truckId,e.litres,e.cost,e.km||"",e.notes||""].join(","));});
+  rows.push("","BD PIPELINE","Company,Stage,Value,Prob%,Weighted");
+  state.deals.forEach(function(d){rows.push([d.company,d.stage,d.value,d.prob,Math.round(d.value*d.prob/100)].join(","));});
+  var blob=new Blob([rows.join("\n")],{type:"text/csv;charset=utf-8"});
+  var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="HRMP-"+period+".csv";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},3000);
+}
+function exportHTML(){
+  var html=document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:"text/html;charset=utf-8"});
+  var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="HRMP-"+(state.month||"all")+".html";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},3000);
+}
+
+// ── TAB SWITCH ────────────────────────────────────────────────────
+var ALL_TABS=["exec","fleet","fuel","odo","drivers","maint","tyre","trip","bd","report","export"];
+function ST(name){
+  ALL_TABS.forEach(function(n){var p=el("panel-"+n),t=el("tab-"+n);if(p)p.classList.remove("active");if(t)t.classList.remove("active");});
+  var pp=el("panel-"+name),tt=el("tab-"+name);if(pp)pp.classList.add("active");if(tt)tt.classList.add("active");
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+window.onload=function(){
+  var now=new Date();
+  state.month=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");
+  var mp=el("monthPicker");if(mp){mp.value=state.month;mp.addEventListener("change",function(){state.month=mp.value;renderAll();});}
+  var td=today();["ffDate","ofDate","drfDate","mfDate","tfDate","trfDate","pfDate"].forEach(function(id){setVal(id,td);});
+  el("btnCSV")&&el("btnCSV").addEventListener("click",exportCSV);
+  el("btnHTML")&&el("btnHTML").addEventListener("click",exportHTML);
+  el("btnPDF")&&el("btnPDF").addEventListener("click",function(){window.print();});
+  populateSelects();buildTruckWorkings();renderAll();
+};
+</script>
 </body>
 </html>
