@@ -1,0 +1,706 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HRMP Logistics — Operations Centre</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  HEADER                                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <img class="logo-img" src="assets/logo/hrmp-logo.png" alt="HRMP Logistics" />
+  <div class="header-divider"></div>
+  <div class="header-text">
+    <h1>Operations Centre</h1>
+    <p>Fleet · Finance · Fuel · Drivers · Maintenance · BD Pipeline · KwaZulu-Natal</p>
+    <div class="header-tag">Delivering. Our Promise.</div>
+  </div>
+  <div class="header-right">
+    <div class="month-selector">
+      <label for="monthPicker">Month</label>
+      <input type="month" id="monthPicker" />
+    </div>
+  </div>
+</header>
+<div class="stripe-bar"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  TAB BAR                                                    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<nav class="tab-bar">
+  <div class="tab active" id="tab-dashboard"  onclick="switchTab('dashboard')">📊 Dashboard</div>
+  <div class="tab"        id="tab-fleet"      onclick="switchTab('fleet')">🚛 Fleet &amp; Finance</div>
+  <div class="tab"        id="tab-fuel"       onclick="switchTab('fuel')">⛽ Fuel Log</div>
+  <div class="tab"        id="tab-odo"        onclick="switchTab('odo')">🔢 Odometer</div>
+  <div class="tab"        id="tab-drivers"    onclick="switchTab('drivers')">👤 Drivers</div>
+  <div class="tab"        id="tab-maint"      onclick="switchTab('maint')">🔧 Maintenance</div>
+  <div class="tab"        id="tab-tyre"       onclick="switchTab('tyre')">⚫ Tyre Log</div>
+  <div class="tab"        id="tab-trip"       onclick="switchTab('trip')">🗺 Trip Log</div>
+  <div class="tab"        id="tab-bd"         onclick="switchTab('bd')">🔀 BD Pipeline</div>
+  <div class="tab"        id="tab-report"     onclick="switchTab('report')">📋 Report</div>
+  <div class="tab"        id="tab-export"     onclick="switchTab('export')">⬇ Export</div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 1 — EXECUTIVE DASHBOARD                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel active" id="panel-dashboard">
+
+  <!-- KPI Row -->
+  <div class="kpi-row cols-6">
+    <div class="kpi-card green">
+      <div class="kpi-label">Fleet Revenue</div>
+      <div class="kpi-value" id="ekRev">R 0</div>
+      <div class="kpi-sub">This month</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Fleet Costs</div>
+      <div class="kpi-value" id="ekCost">R 0</div>
+      <div class="kpi-sub">This month</div>
+    </div>
+    <div class="kpi-card black">
+      <div class="kpi-label">Net Profit</div>
+      <div class="kpi-value" id="ekNet">R 0</div>
+      <div class="kpi-sub">Before tax</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Fuel Spend</div>
+      <div class="kpi-value" id="ekFuel">R 0</div>
+      <div class="kpi-sub">This month</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">BD Pipeline</div>
+      <div class="kpi-value" id="ekPipe">R 0</div>
+      <div class="kpi-sub">Active deals</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Win Rate</div>
+      <div class="kpi-value" id="ekWin">0%</div>
+      <div class="kpi-sub">BD deals</div>
+    </div>
+  </div>
+
+  <!-- Dashboard Grid -->
+  <div class="dash-grid">
+    <div class="dash-card">
+      <h3>🚛 Truck P&amp;L Overview</h3>
+      <div id="execTruckPL"></div>
+    </div>
+    <div class="dash-card">
+      <h3>⚠ Alerts &amp; Actions</h3>
+      <div id="execAlerts"></div>
+    </div>
+    <div class="dash-card">
+      <h3>⛽ Fuel Efficiency per Truck</h3>
+      <div id="execFuelEff"></div>
+    </div>
+    <div class="dash-card">
+      <h3>🔀 BD Pipeline Snapshot</h3>
+      <div id="execBD"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 2 — FLEET & FINANCE                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-fleet">
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card green">
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-value" id="fltRev">R 0</div>
+      <div class="kpi-sub">All trucks</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Total Costs</div>
+      <div class="kpi-value" id="fltCost">R 0</div>
+      <div class="kpi-sub">All trucks</div>
+    </div>
+    <div class="kpi-card black">
+      <div class="kpi-label">Net Profit</div>
+      <div class="kpi-value" id="fltNet">R 0</div>
+      <div class="kpi-sub">Before tax</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Margin</div>
+      <div class="kpi-value" id="fltMgn">0%</div>
+      <div class="kpi-sub">Net margin</div>
+    </div>
+  </div>
+
+  <!-- Per-truck accordions injected here by JS -->
+  <div id="truckWorkings"></div>
+
+  <div class="section-header">Fleet Summary</div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Registration</th>
+          <th class="rt">Revenue</th><th class="rt">Fuel</th>
+          <th class="rt">Driver Pay</th><th class="rt">Maintenance</th>
+          <th class="rt">Tyres</th><th class="rt">Tolls</th>
+          <th class="rt">Insurance</th><th class="rt">Other</th>
+          <th class="rt">Total Cost</th><th class="rt">Net P/L</th>
+        </tr>
+      </thead>
+      <tbody id="fleetSumBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">Fleet Total</td>
+          <td class="rt" id="fsRev">—</td>
+          <td class="rt" id="fsFuel">—</td>
+          <td class="rt" id="fsDrv">—</td>
+          <td class="rt" id="fsMnt">—</td>
+          <td class="rt" id="fsTyr">—</td>
+          <td class="rt" id="fsTol">—</td>
+          <td class="rt" id="fsIns">—</td>
+          <td class="rt" id="fsOth">—</td>
+          <td class="rt" id="fsCst">—</td>
+          <td class="rt" id="fsNet">—</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 3 — FUEL LOG                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-fuel">
+
+  <div class="kpi-row cols-5">
+    <div class="kpi-card green"><div class="kpi-label">Total Litres</div><div class="kpi-value" id="fkL">0 L</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">Total Cost</div><div class="kpi-value" id="fkC">R 0</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Avg R/Litre</div><div class="kpi-value" id="fkR">—</div><div class="kpi-sub">Fleet avg</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Total km</div><div class="kpi-value" id="fkKm">0 km</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card black"><div class="kpi-label">Fleet km/L</div><div class="kpi-value" id="fkEff">—</div><div class="kpi-sub">Efficiency</div></div>
+  </div>
+
+  <!-- Add Form -->
+  <div class="form-card">
+    <div class="form-card-title green-title">+ Add Fuel Entry</div>
+    <div class="form-grid cols-6">
+      <div class="form-field"><label>Date</label><input type="date" id="ffDate" /></div>
+      <div class="form-field"><label>Truck</label><select id="ffTruck"></select></div>
+      <div class="form-field"><label>Litres</label><input type="number" id="ffLitres" placeholder="0.00" min="0" step="0.1" /></div>
+      <div class="form-field"><label>Cost (R)</label><input type="number" id="ffCost" placeholder="0.00" min="0" step="0.01" /></div>
+      <div class="form-field"><label>km Travelled</label><input type="number" id="ffKm" placeholder="0" min="0" step="1" /></div>
+      <div class="form-field"><label>Notes</label><input type="text" id="ffNotes" placeholder="e.g. Engen N2" /></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" id="btnFuelAdd">+ Add</button>
+      <span class="form-msg" id="fuelMsg"></span>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-bar">
+    <label>Filter by Truck:</label>
+    <select id="fuelFilter"></select>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>#</th><th>Reg</th>
+          <th class="rt">Litres</th><th class="rt">Cost</th><th class="rt">R/L</th>
+          <th class="rt">km</th><th class="rt">km/L</th>
+          <th>Notes</th><th class="ct">Del</th>
+        </tr>
+      </thead>
+      <tbody id="fuelBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">Total</td>
+          <td class="rt" id="fftL">—</td><td class="rt" id="fftC">—</td>
+          <td class="rt" id="fftR">—</td><td class="rt" id="fftKm">—</td>
+          <td class="rt" id="fftE">—</td><td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 4 — ODOMETER                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-odo">
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card green"><div class="kpi-label">Total km</div><div class="kpi-value" id="okTotal">0 km</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">Avg km/Entry</div><div class="kpi-value" id="okAvg">0 km</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Entries</div><div class="kpi-value" id="okCount">0</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card black"><div class="kpi-label">Busiest Truck</div><div class="kpi-value" id="okBest">—</div><div class="kpi-sub">By km</div></div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-card-title green-title">+ Add Odometer Entry</div>
+    <div class="form-grid cols-5">
+      <div class="form-field"><label>Date</label><input type="date" id="ofDate" /></div>
+      <div class="form-field"><label>Truck</label><select id="ofTruck"></select></div>
+      <div class="form-field"><label>Driver</label><select id="ofDriver"></select></div>
+      <div class="form-field"><label>Start km</label><input type="number" id="ofStart" placeholder="0" min="0" /></div>
+      <div class="form-field"><label>End km</label><input type="number" id="ofEnd" placeholder="0" min="0" /></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" id="btnOdoAdd">+ Add</button>
+      <span class="form-msg" id="odoMsg"></span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>#</th><th>Reg</th><th>Driver</th>
+          <th class="rt">Start km</th><th class="rt">End km</th>
+          <th class="rt">Distance</th><th class="ct">Del</th>
+        </tr>
+      </thead>
+      <tbody id="odoBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">Total</td><td class="rt">—</td><td class="rt">—</td>
+          <td class="rt" id="oftD">—</td><td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 5 — DRIVERS                                         -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-drivers">
+
+  <div class="section-header">Driver Scorecards — This Month</div>
+  <div class="scorecard-grid" id="scorecardGrid"></div>
+
+  <div class="section-header">Driver Log Entries</div>
+
+  <div class="form-card">
+    <div class="form-card-title blue-title">+ Add Driver Entry</div>
+    <div class="form-grid cols-6">
+      <div class="form-field"><label>Date</label><input type="date" id="drfDate" /></div>
+      <div class="form-field"><label>Driver Name</label><input type="text" id="drfName" placeholder="Full name" /></div>
+      <div class="form-field"><label>Licence / ID No.</label><input type="text" id="drfLic" placeholder="PDP / ID" /></div>
+      <div class="form-field"><label>Truck Assigned</label><select id="drfTruck"></select></div>
+      <div class="form-field"><label>Hours on Duty</label><input type="number" id="drfHours" placeholder="0" min="0" step="0.5" /></div>
+      <div class="form-field"><label>Status</label>
+        <select id="drfStatus">
+          <option value="Active">Active</option>
+          <option value="Off">Off Duty</option>
+          <option value="Sick">Sick Leave</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grid cols-4" style="margin-top:10px;">
+      <div class="form-field"><label>Incidents</label><input type="number" id="drfInc" placeholder="0" min="0" /></div>
+      <div class="form-field"><label>On-Time Deliveries</label><input type="number" id="drfOntime" placeholder="0" min="0" /></div>
+      <div class="form-field"><label>Total Deliveries</label><input type="number" id="drfDel" placeholder="0" min="0" /></div>
+      <div class="form-field"><label>Notes</label><input type="text" id="drfNotes" placeholder="Optional" /></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" id="btnDriverAdd">+ Add Entry</button>
+      <span class="form-msg" id="driverMsg"></span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>Driver</th><th>Licence/ID</th><th>#</th><th>Reg</th>
+          <th class="rt">Hours</th><th class="rt">Incidents</th>
+          <th class="rt">On-Time%</th><th class="rt">Deliveries</th>
+          <th class="ct">Status</th><th class="ct">Del</th>
+        </tr>
+      </thead>
+      <tbody id="driverBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">Total</td>
+          <td class="rt" id="drftH">—</td>
+          <td class="rt" id="drftI">—</td>
+          <td colspan="4"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 6 — MAINTENANCE                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-maint">
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card red"><div class="kpi-label">Total Spend</div><div class="kpi-value" id="mkCost">R 0</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">Services Done</div><div class="kpi-value" id="mkCount">0</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card black"><div class="kpi-label">Due Soon</div><div class="kpi-value" id="mkDue">0</div><div class="kpi-sub">Within 5 000 km</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Overdue</div><div class="kpi-value" id="mkOver">0</div><div class="kpi-sub">Past due km</div></div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-card-title red-title">+ Add Maintenance Entry</div>
+    <div class="form-grid cols-6">
+      <div class="form-field"><label>Date</label><input type="date" id="mfDate" /></div>
+      <div class="form-field"><label>Truck</label><select id="mfTruck"></select></div>
+      <div class="form-field"><label>Service Type</label>
+        <select id="mfType">
+          <option>Oil Change</option><option>Tyre Rotation</option>
+          <option>Brake Service</option><option>Engine Service</option>
+          <option>Transmission</option><option>Electrical</option>
+          <option>Suspension</option><option>Roadworthy</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Workshop</label><input type="text" id="mfShop" placeholder="Workshop name" /></div>
+      <div class="form-field"><label>Cost (R)</label><input type="number" id="mfCost" placeholder="0" min="0" step="100" /></div>
+      <div class="form-field"><label>Next Service (km)</label><input type="number" id="mfNext" placeholder="e.g. 250000" min="0" step="1000" /></div>
+    </div>
+    <div class="form-grid cols-1" style="margin-top:8px;">
+      <div class="form-field"><label>Notes</label><input type="text" id="mfNotes" placeholder="Details, parts replaced…" /></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" id="btnMaintAdd">+ Add</button>
+      <span class="form-msg" id="maintMsg"></span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>#</th><th>Reg</th><th>Type</th><th>Workshop</th>
+          <th class="rt">Cost</th><th class="rt">Next Due (km)</th>
+          <th>Notes</th><th class="ct">Del</th>
+        </tr>
+      </thead>
+      <tbody id="maintBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">Total</td>
+          <td class="rt" id="mftC">—</td>
+          <td colspan="3"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 7 — TYRE LOG                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-tyre">
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card red"><div class="kpi-label">Total Spend</div><div class="kpi-value" id="tkCost">R 0</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">New Tyres</div><div class="kpi-value" id="tkNew">0</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Repairs</div><div class="kpi-value" id="tkRep">0</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card black"><div class="kpi-label">Total Entries</div><div class="kpi-value" id="tkCount">0</div><div class="kpi-sub">All time</div></div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-card-title">+ Add Tyre Entry</div>
+    <div class="form-grid cols-6">
+      <div class="form-field"><label>Date</label><input type="date" id="tfDate" /></div>
+      <div class="form-field"><label>Truck</label><select id="tfTruck"></select></div>
+      <div class="form-field"><label>Position</label>
+        <select id="tfPos">
+          <option>Front Left</option><option>Front Right</option>
+          <option>Rear Left Inner</option><option>Rear Left Outer</option>
+          <option>Rear Right Inner</option><option>Rear Right Outer</option>
+          <option>Trailer Left</option><option>Trailer Right</option>
+          <option>Spare</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Brand</label><input type="text" id="tfBrand" placeholder="e.g. Bridgestone" /></div>
+      <div class="form-field"><label>Action</label>
+        <select id="tfAction">
+          <option>New Tyre</option><option>Rotation</option>
+          <option>Repair</option><option>Replace</option>
+          <option>Inspection</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Cost (R)</label><input type="number" id="tfCost" placeholder="0" min="0" step="50" /></div>
+    </div>
+    <div class="form-grid cols-2" style="margin-top:8px;">
+      <div class="form-field"><label>Tread Depth (mm)</label><input type="number" id="tfTread" placeholder="e.g. 8" min="0" step="0.5" /></div>
+      <div class="form-field"><label>Notes</label><input type="text" id="tfNotes" placeholder="Optional" /></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" id="btnTyreAdd">+ Add</button>
+      <span class="form-msg" id="tyreMsg"></span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>#</th><th>Reg</th><th>Position</th><th>Brand</th>
+          <th>Action</th><th class="rt">Tread (mm)</th><th class="rt">Cost</th>
+          <th>Notes</th><th class="ct">Del</th>
+        </tr>
+      </thead>
+      <tbody id="tyreBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7">Total</td>
+          <td class="rt" id="tftC">—</td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 8 — TRIP LOG                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-trip">
+
+  <div class="kpi-row cols-5">
+    <div class="kpi-card green"><div class="kpi-label">Total Trips</div><div class="kpi-value" id="trpCount">0</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">Total Distance</div><div class="kpi-value" id="trpKm">0 km</div><div class="kpi-sub">This month</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Avg Trip</div><div class="kpi-value" id="trpAvg">0 km</div><div class="kpi-sub">Per trip</div></div>
+    <div class="kpi-card purple"><div class="kpi-label">Total Hours</div><div class="kpi-value" id="trpHrs">0</div><div class="kpi-sub">Drive time</div></div>
+    <div class="kpi-card black"><div class="kpi-label">Active Trucks</div><div class="kpi-value" id="trpTrucks">0</div><div class="kpi-sub">This month</div></div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-card-title purple-title">+ Add Trip</div>
+    <div class="form-grid cols-4">
+      <div class="form-field"><label>Date</label><input type="date" id="trfDate" /></div>
+      <div class="form-field"><label>Truck</label><select id="trfTruck"></select></div>
+      <div class="form-field"><label>Driver</label><select id="trfDriver"></select></div>
+      <div class="form-field"><label>Distance (km)</label><input type="number" id="trfDist" placeholder="0" min="0" /></div>
+    </div>
+    <div class="form-grid cols-4" style="margin-top:8px;">
+      <div class="form-field"><label>Origin</label><input type="text" id="trfOrigin" placeholder="e.g. Durban" /></div>
+      <div class="form-field"><label>Destination</label><input type="text" id="trfDest" placeholder="e.g. Johannesburg" /></div>
+      <div class="form-field"><label>Depart</label><input type="time" id="trfDep" /></div>
+      <div class="form-field"><label>Arrive</label><input type="time" id="trfArr" /></div>
+    </div>
+    <div class="form-grid cols-1" style="margin-top:8px;">
+      <div class="form-field"><label>Load Description</label><input type="text" id="trfLoad" placeholder="e.g. Steel coils — 28 tonnes" /></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" id="btnTripAdd">+ Add Trip</button>
+      <span class="form-msg" id="tripMsg"></span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>#</th><th>Reg</th><th>Driver</th>
+          <th>Origin</th><th>Destination</th>
+          <th class="rt">Distance</th><th>Depart</th><th>Arrive</th>
+          <th>Load</th><th class="ct">Del</th>
+        </tr>
+      </thead>
+      <tbody id="tripBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6">Total</td>
+          <td class="rt" id="trftD">—</td>
+          <td colspan="4"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 9 — BD PIPELINE                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-bd">
+
+  <div class="kpi-row cols-6">
+    <div class="kpi-card green"><div class="kpi-label">Pipeline Value</div><div class="kpi-value" id="bdkPipe">R 0</div><div class="kpi-sub">Active deals</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">Weighted Forecast</div><div class="kpi-value" id="bdkFcast">R 0</div><div class="kpi-sub">Prob. adjusted</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Active Deals</div><div class="kpi-value" id="bdkDeals">0</div><div class="kpi-sub">In pipeline</div></div>
+    <div class="kpi-card black"><div class="kpi-label">Won This Month</div><div class="kpi-value" id="bdkWon">R 0</div><div class="kpi-sub">Closed won</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Win Rate</div><div class="kpi-value" id="bdkWinRate">0%</div><div class="kpi-sub">Won vs closed</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Avg Deal Size</div><div class="kpi-value" id="bdkAvg">R 0</div><div class="kpi-sub">Active deals</div></div>
+  </div>
+
+  <div class="section-header">Pipeline Funnel</div>
+  <div class="funnel-wrap" id="bdFunnel"></div>
+
+  <div class="section-header">Revenue Streams</div>
+  <div class="stream-row" id="bdStreams"></div>
+
+  <div class="form-card">
+    <div class="form-card-title green-title">+ Add Deal</div>
+    <div class="form-grid cols-4">
+      <div class="form-field"><label>Company / Prospect</label><input type="text" id="pfCompany" placeholder="Company name" /></div>
+      <div class="form-field"><label>Contact Person</label><input type="text" id="pfContact" placeholder="Name &amp; surname" /></div>
+      <div class="form-field"><label>Contact Number</label><input type="text" id="pfPhone" placeholder="+27…" /></div>
+      <div class="form-field"><label>BD Rep</label><input type="text" id="pfRep" placeholder="Rep name" /></div>
+    </div>
+    <div class="form-grid cols-5" style="margin-top:8px;">
+      <div class="form-field"><label>Revenue Stream</label>
+        <select id="pfStream">
+          <option value="Trucks">Trucks</option>
+          <option value="Forklift">Forklift Hire</option>
+          <option value="VAS">Value-Added Services</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Stage</label>
+        <select id="pfStage">
+          <option value="Lead">Lead</option>
+          <option value="Qualified">Qualified</option>
+          <option value="Quoted">Quoted</option>
+          <option value="Negotiation">Negotiation</option>
+          <option value="Won">Won</option>
+          <option value="Lost">Lost</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Deal Value (R)</label><input type="number" id="pfValue" placeholder="0" min="0" step="1000" /></div>
+      <div class="form-field"><label>Probability %</label>
+        <select id="pfProb">
+          <option value="10">10% — Lead</option>
+          <option value="25">25% — Qualified</option>
+          <option value="50">50% — Quoted</option>
+          <option value="75">75% — Negotiation</option>
+          <option value="100">100% — Won</option>
+          <option value="0">0% — Lost</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Priority</label>
+        <select id="pfPriority">
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grid cols-4" style="margin-top:8px;">
+      <div class="form-field"><label>Date Added</label><input type="date" id="pfDate" /></div>
+      <div class="form-field"><label>Expected Close</label><input type="date" id="pfClose" /></div>
+      <div class="form-field"><label>Follow-up Date</label><input type="date" id="pfFollowup" /></div>
+      <div class="form-field"><label>Notes</label><input type="text" id="pfNotes" placeholder="Key requirements…" /></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" id="btnDealAdd">+ Add Deal</button>
+      <span class="form-msg" id="dealMsg"></span>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-bar">
+    <label>Stage:</label>
+    <select id="filterStage">
+      <option value="">All Stages</option>
+      <option value="Lead">Lead</option>
+      <option value="Qualified">Qualified</option>
+      <option value="Quoted">Quoted</option>
+      <option value="Negotiation">Negotiation</option>
+      <option value="Won">Won</option>
+      <option value="Lost">Lost</option>
+    </select>
+    <label>Stream:</label>
+    <select id="filterStream">
+      <option value="">All Streams</option>
+      <option value="Trucks">Trucks</option>
+      <option value="Forklift">Forklift Hire</option>
+      <option value="VAS">Value-Added Services</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Company</th><th>Contact</th><th>Rep</th><th>Stream</th>
+          <th class="ct">Stage</th><th class="rt">Value</th>
+          <th class="rt">Prob%</th><th class="rt">Wtd Value</th>
+          <th class="ct">Priority</th><th>Close Date</th>
+          <th>Follow-up</th><th>Notes</th><th class="ct">Del</th>
+        </tr>
+      </thead>
+      <tbody id="pipelineBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">Totals</td>
+          <td class="rt" id="pftVal">—</td>
+          <td></td>
+          <td class="rt" id="pftWtd">—</td>
+          <td colspan="5"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 10 — BOARDROOM REPORT                               -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-report">
+  <div class="report-actions">
+    <button class="btn-report" onclick="window.print()">🖨 Print Report</button>
+    <span style="font-size:11px;color:var(--muted);">Report pulls live data from all modules.</span>
+  </div>
+  <div class="report-preview" id="reportPreview">
+    <p style="color:var(--mlt);font-style:italic;font-size:12px;">Enter data in the modules then return here to view your report.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  PANEL 11 — EXPORT                                         -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-export">
+  <div class="section-header">Export &amp; Save</div>
+  <div class="form-card" style="max-width:520px;">
+    <div class="form-card-title">Download Options</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.65;">
+      All modules export together. Save as HTML to keep the full interactive Operations Centre.
+    </p>
+    <div class="export-row">
+      <button class="btn-export csv" id="btnCSV">⬇ Export CSV</button>
+      <button class="btn-export pdf" id="btnPDF">⬇ Save as PDF</button>
+      <button class="btn-export htm" id="btnHTML">⬇ Save as HTML</button>
+    </div>
+    <p style="font-size:10px;color:var(--mlt);margin-top:14px;line-height:1.65;">
+      💡 <strong>Save as HTML</strong> is your master file — it contains all your data and the full app.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  FOOTER                                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<footer class="page-footer">
+  <span>HRM Holdings (Pty) Ltd &nbsp;·&nbsp; HRMP Logistics (Pty) Ltd &nbsp;·&nbsp; Operations Centre &nbsp;·&nbsp; KwaZulu-Natal</span>
+  <span>Delivering. Our Promise.</span>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  SCRIPTS                                                    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script src="app.js"></script>
+
+</body>
+</html>
